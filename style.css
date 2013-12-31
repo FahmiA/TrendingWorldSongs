@@ -4,10 +4,25 @@
     height: 480px;
 }
 
+#playlistDiv {
+    border: 1px solid black;
+    width: 960px;
+    height: 100px;
+}
+
+#playlistSongsDiv {
+    border: 1px solid black;
+    width: inherit;
+}
+
 .country {
     fill: grey;
     stroke: white;
     stroke-width: 0.5px;
+}
+
+.country-selected {
+    fill: blue;
 }
 
 .country:hover {
