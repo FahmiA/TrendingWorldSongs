@@ -1,0 +1,28 @@
+#drawingArea {
+    border: 1px solid black;
+    width: 960px;
+    height: 480px;
+}
+
+.graticule {
+    fill: none;
+    stroke: #777;
+    stroke-width: .5px;
+    stroke-opacity: .5;
+}
+
+.land {
+    fill: #222;
+}
+
+.land:hover {
+    fill: red;
+}
+
+.boundary {
+    fill: none;
+    stroke: #fff;
+    stroke-width: .5px;
+}
+
+
