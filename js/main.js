@@ -11,6 +11,25 @@ function handleCountrySelect(countryElement, countryData) {
     d3.select(countryElement)
         .classed('country-selected', true);
 
+    var ECHONEST_API_KEY = 'ADD API KEY HERE';
+    var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=' + countryData.properties.name + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
+
+    d3.json(echonestQuery, function(error, data) {
+        var status = data.response.status;
+        if(status.code !== 0) {
+            console.log(data);
+            alert('Could not retrieve trending songs from ' + countryData.properties.name);
+        }else{
+            var songs = data.response.songs;
+            console.log(songs);
+
+            var audio = d3.select('#audio').node();
+            audio.pause();
+            audio.src = songs[0].tracks[0].preview_url;
+            audio.play();
+        }
+    });
+
 };
 
 function createWorldMap() {
