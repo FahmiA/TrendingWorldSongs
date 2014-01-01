@@ -1,3 +1,43 @@
+#audioControl {
+    border: 1px solid black;
+    width: 960px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.audioControlButton {
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background-size: 100%;
+    float: left;
+}
+
+#prevTrack {
+    background-image: url('media/prev-button-up.png');
+}
+
+#playPause {
+    background-image: url('media/play-button-up.png');
+}
+
+#nextTrack {
+    background-image: url('media/next-button-up.png');
+}
+
+#audioControlDetails {
+    padding: 5px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+#audioControlDetails span {
+    font-weight: bold;
+}
+
+#songThumbnail {
+    border: 1px solid black;
+}
+
 #drawingArea {
     border: 1px solid black;
     width: 960px;
