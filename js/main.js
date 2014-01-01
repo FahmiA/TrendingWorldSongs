@@ -1,4 +1,8 @@
 
+var audioPlaylist = null;
+var audioPlayer = null;
+
+createAudioPlayer();
 createWorldMap();
 
 function handleCountryDeselect(countryElement) {
@@ -11,7 +15,7 @@ function handleCountrySelect(countryElement, countryData) {
     d3.select(countryElement)
         .classed('country-selected', true);
 
-    var ECHONEST_API_KEY = 'ADD API KEY HERE';
+    var ECHONEST_API_KEY = 'KVBFT8M5F51MGFGCF';
     var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=' + countryData.properties.name + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
 
     d3.json(echonestQuery, function(error, data) {
@@ -21,16 +25,26 @@ function handleCountrySelect(countryElement, countryData) {
             alert('Could not retrieve trending songs from ' + countryData.properties.name);
         }else{
             var songs = data.response.songs;
-            console.log(songs);
-
-            var audio = d3.select('#audio').node();
-            audio.pause();
-            audio.src = songs[0].tracks[0].preview_url;
-            audio.play();
+            updateAudio(songs);
         }
     });
-
 };
+
+function updateAudio(songs) {
+    audioPlaylist.clear();
+
+    var song, track;
+    for(var i = 0; i < songs.length; i++) {
+        song = songs[i];
+        for(var j = 0; j < song.tracks.length; j++) {
+            track = song.tracks[j];
+            audioPlaylist.addSong(song.title, song.artist_name, track.preview_url, track.release_image);
+            break; // Experimental - only accept first track
+        }
+    }
+    
+    audioPlaylist.play();
+}
 
 function createWorldMap() {
     // The map dimensions
@@ -68,3 +82,12 @@ function createWorldMap() {
     });
 }
 
+//var AudioPlayer = function(playButton, prevButton, nextButton, titleSpan, artistSpan, playlist) {
+function createAudioPlayer() {
+    audioPlaylist = new AudioPlaylist(d3.select('#audio').node());
+    audioPlayer = new AudioPlayer(d3.select('#playPause'), d3.select('#prevTrack'), d3.select('#nextTrack'),
+                                  d3.select('#songThumbnail'), 
+                                  d3.select('#songTitle'), d3.select('#songArtist'),
+                                  audioPlaylist);
+    audioPlayer.init();
+}

@@ -36,6 +36,7 @@
 
 #songThumbnail {
     border: 1px solid black;
+    background-size: 100%;
 }
 
 #drawingArea {
