@@ -42,24 +42,38 @@ AudioPlaylist.prototype.pause = function() {
 
 AudioPlaylist.prototype.nextSong = function() {
     if(this.hasNextSong()) {
+        // Play next song
         this.pause();
         this._audio.src = this._songs[++this._index].url;
         this.play();
-
-        if(this._songChangedCallback)
-            this._songChangedCallback(this._songs[this._index]);
+    }else{
+        // Loop to beginning
+        this._index = 0;
+        this.pause();
+        this._audio.src = this._songs[this._index].url;
+        this.play();
     }
+
+    if(this._songChangedCallback)
+        this._songChangedCallback(this._songs[this._index]);
 };
 
 AudioPlaylist.prototype.prevSong = function() {
     if(this.hasPrevSong()) {
+        // Play previous song
         this.pause();
         this._audio.src = this._songs[--this._index].url;
         this.play();
-
-        if(this._songChangedCallback)
-            this._songChangedCallback(this._songs[this._index]);
+    }else{
+        // Loop to end
+        this._index = this.size() - 1;
+        this.pause();
+        this._audio.src = this._songs[this._index].url;
+        this.play();
     }
+
+    if(this._songChangedCallback)
+        this._songChangedCallback(this._songs[this._index]);
 };
 
 AudioPlaylist.prototype.hasNextSong = function() {
