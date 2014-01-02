@@ -16,7 +16,9 @@ function handleCountrySelect(countryElement, countryData) {
         .classed('country-selected', true);
 
     var ECHONEST_API_KEY = 'KVBFT8M5F51MGFGCF';
-    var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=' + countryData.properties.name + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
+    var country = countryData.properties.name.replace(/\W+/g, '+').toLowerCase();
+    var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
+    //var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=location:' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
 
     d3.json(echonestQuery, function(error, data) {
         var status = data.response.status;
