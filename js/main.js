@@ -89,7 +89,7 @@ function createWorldMap() {
 //var AudioPlayer = function(playButton, prevButton, nextButton, titleSpan, artistSpan, playlist) {
 function createAudioPlayer() {
     audioPlaylist = new AudioPlaylist(d3.select('#audio').node());
-    audioPlayer = new AudioPlayer(d3.select('#playPause'), d3.select('#prevTrack'), d3.select('#nextTrack'),
+    audioPlayer = new AudioPlayer(d3.select('#playTrack'), d3.select('#prevTrack'), d3.select('#nextTrack'),
                                   d3.select('#songThumbnail'), 
                                   d3.select('#songTitle'), d3.select('#songArtist'),
                                   audioPlaylist);

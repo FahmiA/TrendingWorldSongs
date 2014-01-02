@@ -11,6 +11,10 @@ h1 {
     text-align: center;
 }
 
+h1, h2, p {
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
 #introText {
     margin-bottom: 50px;
     border-bottom: 1px solid black;
@@ -36,12 +40,32 @@ h1 {
     background-image: url('media/prev-button-up.png');
 }
 
-#playPause {
+#prevTrack.disabled {
+    background-image: url('media/prev-button-disabled.png');
+}
+
+#playTrack {
     background-image: url('media/play-button-up.png');
+}
+
+#pauseTrack {
+    background-image: url('media/pause-button-up.png');
+}
+
+#playTrack.disabled {
+    background-image: url('media/play-button-disabled.png');
+}
+
+#pauseTrack.disabled {
+    background-image: url('media/pause-button-disabled.png');
 }
 
 #nextTrack {
     background-image: url('media/next-button-up.png');
+}
+
+#nextTrack.disabled {
+    background-image: url('media/next-button-disabled.png');
 }
 
 #audioControlDetails {

@@ -38,9 +38,20 @@ AudioPlayer.prototype._disablePrevButton = function() {
 };
 
 AudioPlayer.prototype._enablePlayButton = function() {
+    this._playButton.attr('id', 'pauseTrack');
+
+    var me = this;
     this._playButton
         .classed('disabled', false)
         .on('mouseup', function(){
+            var state = me._playButton.attr('id');
+            if(state === 'playTrack') {
+                me._playButton.attr('id', 'pauseTrack');
+                me._playlist.play();
+            }else{
+                me._playButton.attr('id', 'playTrack');
+                me._playlist.pause();
+            }
         });
 };
 

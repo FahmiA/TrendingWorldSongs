@@ -605,7 +605,8 @@
     </g>
     <g
        transform="translate(-2074.5864,2859.0461)"
-       id="g3396">
+       id="g3396"
+       style="opacity:0.5">
       <g
          id="g3398"
          transform="matrix(1,0,0,-1,0,800)">
@@ -619,11 +620,12 @@
          inkscape:connector-curvature="0"
          id="path3402"
          d="m 325.27165,325.27165 221.45669,0 0,221.45669 -221.45669,0 z"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.54330707;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.54330707000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
     <g
        transform="translate(-4946.5699,2859.0461)"
-       id="g3404">
+       id="g3404"
+       style="opacity:0.5">
       <g
          id="g3406"
          transform="matrix(1,0,0,-1,0,800)">
@@ -643,9 +645,10 @@
     <g
        transform="translate(-1117.2588,2859.0461)"
        id="g3412"
-       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\prev-button-up.png"
+       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\prev-button-disabled.png"
        inkscape:export-xdpi="23.68"
-       inkscape:export-ydpi="23.68">
+       inkscape:export-ydpi="23.68"
+       style="opacity:0.5">
       <g
          id="g3414"
          transform="matrix(1,0,0,-1,0,800)">
@@ -658,15 +661,16 @@
       <path
          inkscape:connector-curvature="0"
          d="m 269.73651,436 147.4772,123.73855 0,-247.4771 z m 150.0001,0 147.4771,123.73855 0,-247.4771 z"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.52289772;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.52289772000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          id="path3418" />
     </g>
     <g
        transform="translate(-3989.2421,2859.0461)"
        id="g3420"
-       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\play-button-up.png"
+       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\play-button-disabled.png"
        inkscape:export-xdpi="23.68"
-       inkscape:export-ydpi="23.68">
+       inkscape:export-ydpi="23.68"
+       style="opacity:0.5">
       <g
          id="g3422"
          transform="matrix(1,0,0,-1,0,800)">
@@ -681,14 +685,15 @@
          id="path3426"
          d="m 599.37077,436 -246.74154,123.37077 0,-246.74154 z"
          inkscape:transform-center-x="-41.123591"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.25845766;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.25845765999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
     <g
        transform="translate(-3031.9143,2859.0461)"
        id="g3428"
-       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\pause-button-up.png"
+       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\pause-button-disabled.png"
        inkscape:export-xdpi="23.68"
-       inkscape:export-ydpi="23.68">
+       inkscape:export-ydpi="23.68"
+       style="opacity:0.5">
       <g
          id="g3430"
          transform="matrix(1,0,0,-1,0,800)">
@@ -708,9 +713,10 @@
     <g
        transform="translate(-159.93077,2859.0461)"
        id="g3436"
-       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\next-button-up.png"
+       inkscape:export-filename="C:\Users\Fahmi\Documents\git\TrendingWorldSongs\media\next-button-disabled.png"
        inkscape:export-xdpi="23.68"
-       inkscape:export-ydpi="23.68">
+       inkscape:export-ydpi="23.68"
+       style="opacity:0.5">
       <g
          id="g3438"
          transform="matrix(1,0,0,-1,0,800)">
@@ -723,12 +729,13 @@
       <path
          inkscape:connector-curvature="0"
          d="m 614.33235,436 -147.4772,123.73855 0,-247.4771 z m -150.0001,0 -147.4771,123.73855 0,-247.4771 z"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.52289772;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.52289772000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          id="path3442" />
     </g>
     <g
        transform="translate(797.397,2859.0461)"
-       id="g3444">
+       id="g3444"
+       style="opacity:0.5">
       <g
          id="g3446"
          transform="matrix(1,0,0,-1,0,800)">
@@ -742,11 +749,12 @@
          inkscape:connector-curvature="0"
          id="path3450"
          d="m 355.39062,312.53125 0,102.09375 204.03125,-102 0,246.75 -204.03125,-102 0,102.09375 -42.8125,0 0,-246.9375 42.8125,0 z"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.25845766;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.25845765999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
     <g
        transform="translate(1754.7246,2859.0461)"
-       id="g3452">
+       id="g3452"
+       style="opacity:0.5">
       <g
          id="g3454"
          transform="matrix(1,0,0,-1,0,800)">
@@ -760,11 +768,12 @@
          inkscape:connector-curvature="0"
          id="path3458"
          d="m 516.60937,312.53125 0,102.09375 -204.03125,-102 0,246.75 204.03125,-102 0,102.09375 42.8125,0 0,-246.9375 -42.8125,0 z"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.25845766;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:3.25845765999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
     <g
        transform="translate(2712.0526,2859.0461)"
-       id="g3460">
+       id="g3460"
+       style="opacity:0.5">
       <g
          id="g3462"
          transform="matrix(1,0,0,-1,0,800)">
@@ -778,7 +787,7 @@
          inkscape:connector-curvature="0"
          id="path3466"
          d="m 436,307.25 -123.75,147.5 247.5,0 L 436,307.25 z m -125.40625,170.34375 0,46.8125 250.8125,0 0,-46.8125 -250.8125,0 z"
-         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.52289772;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+         style="color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.52289772000000000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
     <text
        xml:space="preserve"
