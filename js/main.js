@@ -24,8 +24,12 @@ function handleCountrySelect(countryElement, countryData) {
             console.log(data);
             alert('Could not retrieve trending songs from ' + countryData.properties.name);
         }else{
+            // Update the songs to play
             var songs = data.response.songs;
             updateAudio(songs);
+
+            // Update the country display
+            d3.select('#countryName').text(countryData.properties.name);
         }
     });
 };
