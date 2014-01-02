@@ -40,10 +40,10 @@ function updateAudio(songs) {
     var song, track;
     for(var i = 0; i < songs.length; i++) {
         song = songs[i];
-        for(var j = 0; j < song.tracks.length; j++) {
-            track = song.tracks[j];
+        // Take only the first track
+        if(song.tracks.length > 0) {
+            track = song.tracks[0];
             audioPlaylist.addSong(song.title, song.artist_name, track.preview_url, track.release_image);
-            break; // Experimental - only accept first track
         }
     }
     
