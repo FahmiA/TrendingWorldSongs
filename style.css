@@ -1,8 +1,27 @@
-#audioControl {
+/*div, svg {
     border: 1px solid black;
+}*/
+
+#content {
     width: 960px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+#introText {
+    margin-bottom: 50px;
+    border-bottom: 1px solid black;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+}
+
+#audioControl {
+    width: 60%;
     height: 50px;
-    margin-bottom: 10px;
+    margin: 0 auto;
 }
 
 .audioControlButton {
@@ -28,6 +47,7 @@
 #audioControlDetails {
     padding: 5px 0px 0px 0px;
     margin: 0px 0px 0px 0px;
+    float: left;
 }
 
 #audioControlDetails span {
@@ -35,14 +55,16 @@
 }
 
 #songThumbnail {
-    border: 1px solid black;
     background-size: 100%;
 }
 
 #drawingArea {
-    border: 1px solid black;
     width: 960px;
-    height: 480px;
+    height: 390px;
+
+    border-bottom: 1px solid black;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
 }
 
 .country {

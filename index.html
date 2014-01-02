@@ -10,26 +10,39 @@
 <script src="js/lib/topojson.v1.js"></script>
 
 <body>
-    <h1>Trending Songs from Around the World</h1>
+    <div id="content">
+        <h1>Trending Songs from Around the World</h1>
 
-    <audio id="audio">
-        <p>HTML5 audio not supported. Please use an HTML5-compatible browser.</p>
-    </audio>
-
-    <div id="audioControl">
-        <div class="audioControlButton" id="songThumbnail"></div>
-        <div class="audioControlButton" id="prevTrack"></div>
-        <div class="audioControlButton" id="playPause"></div>
-        <div class="audioControlButton" id="nextTrack"></div>
-        <p id="audioControlDetails">
-            Sampling popular music from <span id="countryName">nowhere</span>
-            <br/>
-            <span id="songTitle">something</span> by <span id="songArtist">someone</span>
+        <p id="introText">
+           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quam urna, mattis ac aliquet vel, condimentum quis justo. Etiam quis lorem lorem. Sed eleifend metus eu ante viverra imperdiet. Etiam porttitor odio sed felis dictum, nec mollis justo sollicitudin. Phasellus vel libero at lacus tempus posuere. Phasellus in lorem et justo volutpat vehicula ut id elit. Nunc ac fringilla justo. Aliquam porttitor enim sit amet metus rhoncus malesuada. Ut quis eleifend arcu, non ultricies orci. Nam rhoncus quam in elit ultricies, et rhoncus neque euismod. Morbi scelerisque nisl augue, nec volutpat risus sollicitudin a. Vivamus molestie nulla massa, vel semper leo bibendum consequat. Curabitur vel consequat eros.  
         </p>
-    </div>
 
-    <svg id="drawingArea">
-    </svg>
+        <audio id="audio">
+            <p>HTML5 audio not supported. Please use an HTML5-compatible browser.</p>
+        </audio>
+
+        <div id="audioControl">
+            <div class="audioControlButton" id="songThumbnail"></div>
+            <div class="audioControlButton" id="prevTrack"></div>
+            <div class="audioControlButton" id="playPause"></div>
+            <div class="audioControlButton" id="nextTrack"></div>
+            <p id="audioControlDetails">
+                Sampling popular music from <span id="countryName">nowhere</span>
+                <br/>
+                <span id="songTitle">something</span> by <span id="songArtist">someone</span>
+            </p>
+        </div>
+
+        <svg id="drawingArea">
+        </svg>
+
+        <div class="faq">
+            <h2> How does it work? </h2>
+            <p>
+                well...
+            </p>
+        </div>
+    </div>
 </body>
 
 <script src="js/AudioPlayer.js"></script>
