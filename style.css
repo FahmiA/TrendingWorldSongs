@@ -23,9 +23,7 @@ h1, h2, p {
 }
 
 #audioControl {
-    width: 60%;
     height: 50px;
-    margin: 0 auto;
 }
 
 .audioControlButton {
