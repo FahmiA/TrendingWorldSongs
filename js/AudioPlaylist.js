@@ -11,10 +11,11 @@ var AudioPlaylist = function(audioElement) {
     }.bind(this);
 };
 
-AudioPlaylist.prototype.addSong = function(title, artist, url, thumbnailURL) {
+AudioPlaylist.prototype.addSong = function(title, artist, artistId, url, thumbnailURL) {
     this._songs.push({
         title: title,
         artist: artist,
+        artistId: artistId,
         url: url,
         thumbnailURL: thumbnailURL
     });

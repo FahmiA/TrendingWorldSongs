@@ -81,5 +81,31 @@ AudioPlayer.prototype._updatePlayer = function(songInfo) {
     this._enablePlayButton();
     this._enableNextButton();
     this._enablePrevButton();
+
+    this._updateArtistURL(songInfo.artistId);
 };
+
+AudioPlayer.prototype._updateArtistURL = function(artistId) {
+    var profileQuey = 'http://developer.echonest.com/api/v4/artist/profile?api_key=' + ECHONEST_API_KEY + '&format=json&id=' + artistId + '&bucket=urls';
+    d3.json(profileQuey, function(error, data) {
+        var status = data.response.status;
+        var artistElement = d3.select('#songArtist');
+        if(status.code !== 0) {
+            console.log('Could not retrieve artist profile (response below).');
+            console.log(data);
+            artistElement.attr('href', '#');
+        }else{
+            var urls = data.response.artist.urls;
+            if(urls.wikipedia_url) {
+                artistElement.attr('href', urls.wikipedia_url);
+            }else if(urls.official_url) {
+                artistElement.attr('href', urls.official_url);
+            }else{
+                console.log('Could not retrieve artist urls (response below).');
+                console.log(data);
+                artistElement.attr('href', '#');
+            }
+        }
+    });
+}
 

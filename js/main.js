@@ -1,6 +1,7 @@
 
 var audioPlaylist = null;
 var audioPlayer = null;
+var ECHONEST_API_KEY = 'KVBFT8M5F51MGFGCF';
 
 createAudioPlayer();
 createWorldMap();
@@ -15,7 +16,6 @@ function handleCountrySelect(countryElement, countryData) {
     d3.select(countryElement)
         .classed('country-selected', true);
 
-    var ECHONEST_API_KEY = 'KVBFT8M5F51MGFGCF';
     var country = countryData.properties.name.replace(/\W+/g, '+').toLowerCase();
     var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
     //var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=location:' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
@@ -45,7 +45,8 @@ function updateAudio(songs) {
         // Take only the first track
         if(song.tracks.length > 0) {
             track = song.tracks[0];
-            audioPlaylist.addSong(song.title, song.artist_name, track.preview_url, track.release_image);
+            audioPlaylist.addSong(song.title, song.artist_name, song.artist_id,
+                                  track.preview_url, track.release_image);
         }
     }
     
