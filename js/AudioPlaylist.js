@@ -6,9 +6,9 @@ var AudioPlaylist = function(audioElement) {
 
     this._songChangedCallback = null;
 
-    this._audio.onended = function() {
+    this._audio.addEventListener('ended', function() {
         this.nextSong();
-    }.bind(this);
+    }.bind(this));
 };
 
 AudioPlaylist.prototype.addSong = function(title, artist, artistId, url, thumbnailURL) {
