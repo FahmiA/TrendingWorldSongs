@@ -89,8 +89,7 @@ AudioPlayer.prototype._updateArtistURL = function(artistId) {
     var profileQuey = 'http://developer.echonest.com/api/v4/artist/profile?api_key=' + ECHONEST_API_KEY + '&format=json&id=' + artistId + '&bucket=urls';
     var me = this;
     d3.json(profileQuey, function(error, data) {
-        var status = data.response.status;
-        if(status.code !== 0) {
+        if(!data || data.response.status.code !== 0) {
             console.log('Could not retrieve artist profile (response below).');
             console.log(data);
             me._artistSpan.attr('href', '#');

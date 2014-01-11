@@ -21,10 +21,9 @@ function handleCountrySelect(countryElement, countryData) {
     //var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=location:' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
 
     d3.json(echonestQuery, function(error, data) {
-        var status = data.response.status;
-        if(status.code !== 0) {
+        if(!data || data.response.status.code !== 0) {
+            alert('Could not retrieve trending songs from ' + countryData.properties.name + '. Try again later.');
             console.log(data);
-            alert('Could not retrieve trending songs from ' + countryData.properties.name);
         }else{
             // Update the songs to play
             var songs = data.response.songs;
@@ -70,6 +69,12 @@ function createWorldMap() {
     // Load the map data and draw the map
     var svg = d3.select('#drawingArea');
     d3.json("data/worldMap.json", function(error, world) {
+        if(!world) {
+            alert('Could not load world map. Try again later.');
+            console.log(world);
+            return;
+        }
+
         var prevCountryElement;
         svg.selectAll('path')
             .data(world.features)
