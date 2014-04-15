@@ -77,14 +77,15 @@ function createWorldMap() {
             .append('path')
             .attr('d', path)
             .attr('class', 'country')
-            .attr('title', function(d) {
-                return d.properties.name;
-            })
             .on('mouseup', function(d) {
                 if(prevCountryElement)
                     handleCountryDeselect(prevCountryElement);
                 handleCountrySelect(this, d);
                 prevCountryElement = this;
+            })
+            .append('title')
+            .text(function(d) {
+                return d.properties.name;
             });
     });
 }
