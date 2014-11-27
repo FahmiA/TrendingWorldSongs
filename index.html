@@ -34,7 +34,7 @@
             <div class="audioControlButton" id="playTrack"></div>
             <div class="audioControlButton" id="nextTrack"></div>
             <p id="audioControlDetails">
-                Sampling popular music around <span id="countryName">nowhere</span>
+                Sampling popular music from <span id="countryName">nowhere</span>
                 <br/>
                 <span id="songTitle">something</span> by <a id="songArtist" href="#" target="_blank">someone</a>
             </p>
@@ -46,9 +46,10 @@
         <div class="faq">
             <h2>How does it work?</h2>
             <p>
-                This site is powered by two powerful tools.
+                This site is powered by three powerful tools.
                 The <a href="http://d3js.org/" target="_blank">D3</a> library is used to visualise the world map (using <a href="https://github.com/markmarkoh/datamaps/blob/master/src/js/data/world.json" target="_blank">Mark DiMarco's</a> world data).
                 The <a href="http://echonest.com/" target="_blank">Echo Nest</a> provides information about music, artists, and what music is currently trending.
+                The <a href="http://www.7digital.com/" target="_blank">7Digital</a> service provides the song previews to listen to.
             </p>
         </div>
         <div class="faq">
@@ -62,6 +63,8 @@
 </body>
 
 <script src="js/SimpleURL.js"></script>
+<script src="js/GeometryUtil.js"></script>
 <script src="js/AudioPlayer.js"></script>
 <script src="js/AudioPlaylist.js"></script>
 <script src="js/main.js"></script>
+

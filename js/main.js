@@ -11,68 +11,14 @@ function handleCountryDeselect(countryElement) {
         .classed('country-selected', false);
 }
 
-function getLocationBounds(countryData) {
-    // Latitude ranges from -90.0 to 90.0
-    // Longitude ranges from -180.0 to 180.0
-    var result = {
-        minLatitude: 90.0,
-        maxLatitude: -90.0,
-        minLongitude: 180.0,
-        maxLongitude: -180.0
-    };
-
-    console.log(countryData.geometry.type);
-
-    var coordinates = countryData.geometry.coordinates;
-    if(countryData.geometry.type === 'Polygon') {
-        // Iterate over multi-polygons (like the north and south islands of New Zealand)
-        for(var i = 0; i < coordinates.length; i++) {
-            var polygon = coordinates[i];
-
-            // Iterate over points
-            for(var k = 0; k < polygon.length; k++) {
-                var point = polygon[k];
-
-                result.minLongitude = Math.min(result.minLongitude, point[0]);
-                result.maxLongitude = Math.max(result.maxLongitude, point[0]);
-                result.minLatitude = Math.min(result.minLatitude, point[1]);
-                result.maxLatitude = Math.max(result.maxLatitude, point[1]);
-            }
-        }
-    }else{ // type === 'MultiPolygon'
-        // Iterate over multi-polygons (like the north and south islands of New Zealand)
-        for(var i = 0; i < coordinates.length; i++) {
-            var multiPolygon = coordinates[i];
-
-            // Iterate over polygons
-            for(var j = 0; j < multiPolygon.length; j++) {
-                var polygon = multiPolygon[j];
-
-                // Iterate over points
-                for(var k = 0; k < polygon.length; k++) {
-                    var point = polygon[k];
-
-                    result.minLongitude = Math.min(result.minLongitude, point[0]);
-                    result.maxLongitude = Math.max(result.maxLongitude, point[0]);
-                    result.minLatitude = Math.min(result.minLatitude, point[1]);
-                    result.maxLatitude = Math.max(result.maxLatitude, point[1]);
-                }
-            }
-
-        }
-
-    }
-
-    return result;
-}
-
 function handleCountrySelect(countryElement, countryData) {
     // Display the country as selected
     d3.select(countryElement)
         .classed('country-selected', true);
 
     //var country = countryData.properties.name.replace(/\W+/g, '+').toLowerCase();
-    var countryBounds = getLocationBounds(countryData); // Check if type is polygon or multi-polygon (has one dimention extra)
+    var geometryUtil = new GeometryUtil();
+    var countryBounds = geometryUtil.getCountryBounds(countryData);
     var echonestQuery = 'http://developer.echonest.com/api/v4/song/search' + 
                             '?api_key=' + ECHONEST_API_KEY +
                             '&format=json' +
@@ -161,7 +107,6 @@ function createWorldMap() {
     });
 }
 
-//var AudioPlayer = function(playButton, prevButton, nextButton, titleSpan, artistSpan, playlist) {
 function createAudioPlayer() {
     audioPlaylist = new AudioPlaylist(d3.select('#audio').node());
     audioPlayer = new AudioPlayer(d3.select('#playTrack'), d3.select('#prevTrack'), d3.select('#nextTrack'),
