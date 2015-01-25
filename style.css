@@ -76,6 +76,10 @@ h1, h2, p, a {
     font-weight: bold;
 }
 
+#countryName {
+    text-transform: capitalize;
+}
+
 #songThumbnail {
     background-size: 100%;
 }
