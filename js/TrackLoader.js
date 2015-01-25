@@ -64,7 +64,9 @@ TrackLoader.prototype = {
         url.addParameter('api_key', this.ECHONEST_API_KEY)
            .addParameter('id', songId)
            .addParameter('bucket', 'tracks')
-           .addParameter('bucket', 'id:7digital-US');
+           .addParameter('bucket', 'id:7digital-US')
+           .addParameter('bucket', 'id:7digital-AU')
+           .addParameter('bucket', 'id:7digital-UK');
 
         var echonestQuery = url.toString();
 

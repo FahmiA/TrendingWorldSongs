@@ -1,4 +1,4 @@
-
+;;
 var AudioPlaylist = function(audioElement) {
     this._audio = audioElement;
     this._songs = [];
@@ -99,7 +99,7 @@ AudioPlaylist.prototype = {
         // Remove the song from this playlist and try again
         this._songs.splice(this._index++, 1);
 
-        this.nextSong();
+        this.prevSong();
     },
 
     hasSongs: function() {
