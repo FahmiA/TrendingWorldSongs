@@ -82,29 +82,6 @@ AudioPlayer.prototype._updatePlayer = function(song) {
     this._enableNextButton();
     this._enablePrevButton();
 
-    //this._updateArtistURL(songInfo.artistId);
-};
-
-AudioPlayer.prototype._updateArtistURL = function(artistId) {
-    //var profileQuey = 'http://developer.echonest.com/api/v4/artist/profile?api_key=' + ECHONEST_API_KEY + '&format=json&id=' + artistId + '&bucket=urls';
-    //var me = this;
-    //d3.json(profileQuey, function(error, data) {
-    //    if(!data || data.response.status.code !== 0) {
-    //        console.log('Could not retrieve artist profile (response below).');
-    //        console.log(data);
-    //        me._artistSpan.attr('href', '#');
-    //    }else{
-    //        var urls = data.response.artist.urls;
-    //        if(urls.wikipedia_url) {
-    //            me._artistSpan.attr('href', urls.wikipedia_url);
-    //        }else if(urls.official_url) {
-    //            me._artistSpan.attr('href', urls.official_url);
-    //        }else{
-    //            console.log('Could not retrieve artist urls (response below).');
-    //            console.log(data);
-    //            me._artistSpan.attr('href', '#');
-    //        }
-    //    }
-    //});
+    this._artistSpan.attr('href', song.getArtistURL());
 };
 

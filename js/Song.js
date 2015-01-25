@@ -1,7 +1,8 @@
 
-var Song = function(name, artist) {
-    this.name = name;
-    this.artist = artist;
+var Song = function(name, artist, artistURL) {
+    this._name = name;
+    this._artist = artist;
+    this._artistURL = artistURL;
 
     this._ids = [];
     this._url = null;
@@ -10,11 +11,11 @@ var Song = function(name, artist) {
 
 Song.prototype = {
     getName: function() {
-        return this.name;
+        return this._name;
     },
 
     getArtist: function() {
-        return this.artist;
+        return this._artist;
     },
 
     getIds: function() {
@@ -35,6 +36,10 @@ Song.prototype = {
 
     setURL: function(url) {
         this._url = url;
+    },
+
+    getArtistURL: function() {
+        return this._artistURL;
     },
 
     hasAlbumCoverURL: function() {
