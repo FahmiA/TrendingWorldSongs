@@ -3,6 +3,10 @@ var AudioPlayListLoader = function() {
 };
 
 AudioPlayListLoader.prototype = {
+    COUNTRY_QUERY_MAP: {
+        'united states of america': 'united states'
+    },
+
     loadPlaylist: function(audioPlaylist, countryName) {
         return this._queryCountry(countryName)
                     .then(this._getSongs.bind(this))
@@ -10,9 +14,11 @@ AudioPlayListLoader.prototype = {
     },
 
     _queryCountry: function(countryName) {
+        var queryableCountryName = this._getQueryableCountryName(countryName);
+
         var url = new SimpleURL('http://developer.echonest.com/api/v4/artist/search');
         url.addParameter('api_key', ECHONEST_API_KEY)
-           .addParameter('artist_location', '^' + countryName)
+           .addParameter('artist_location', '^' + queryableCountryName)
            .addParameter('sort', 'hotttnesss-desc')
            .addParameter('bucket', 'songs')
            .addParameter('bucket', 'urls');
@@ -29,6 +35,14 @@ AudioPlayListLoader.prototype = {
         });
 
         return deferred.promise;
+    },
+
+    _getQueryableCountryName: function(countryName) {
+        if(this.COUNTRY_QUERY_MAP[countryName]) {
+            countryName = this.COUNTRY_QUERY_MAP[countryName];
+        }
+
+        return countryName;
     },
 
     _getSongs: function(artistsJson) {
