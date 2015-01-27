@@ -1,12 +1,15 @@
 
-var AudioPlayer = function(playButton, prevButton, nextButton, thumbnailDiv, titleSpan, artistSpan, playlist) {
-    this._playButton = playButton;
-    this._prevButton = prevButton;
-    this._nextButton = nextButton;
-    this._thumbnailDiv = thumbnailDiv;
-    this._titleSpan = titleSpan;
-    this._artistSpan = artistSpan;
-    this._playlist = playlist;
+var AudioPlayer = function(cfg) {
+    this._playButton = cfg.playButton;
+    this._prevButton = cfg.prevButton;
+    this._nextButton = cfg.nextButton;
+    this._thumbnailDiv = cfg.thumbnailDiv;
+    this._songInfoSentence = cfg.songInfoSentence;
+    this._titleSpan = cfg.titleSpan;
+    this._artistSpan = cfg.artistSpan;
+    this._songLoadSentence = cfg.songLoadSentence;
+    this._loadingSpan = cfg.loadingSpan;
+    this._playlist = cfg.playlist;
 };
 
 AudioPlayer.prototype = {
@@ -14,6 +17,10 @@ AudioPlayer.prototype = {
         this._disablePlayButton();
         this._disableNextButton();
         this._disablePrevButton();
+
+        this._playlist.onPlaylistLoad(function() {
+            this._showLoadingMessage();
+        }.bind(this));
 
         this._playlist.onSongChange(function(song) {
             this._updatePlayer(song);
@@ -75,6 +82,8 @@ AudioPlayer.prototype = {
     },
 
     _updatePlayer: function(song) {
+        this._hideLoadingMessage();
+
         this._titleSpan.text(song.getName());
         this._artistSpan.text(song.getArtist());
         this._thumbnailDiv.style('background-image', 'url(' + song.getAlbumCoverURL() + ')');
@@ -84,6 +93,16 @@ AudioPlayer.prototype = {
         this._enablePrevButton();
 
         this._artistSpan.attr('href', song.getArtistURL());
+    },
+
+    _showLoadingMessage: function() {
+        this._songInfoSentence.classed('hidden', true);
+        this._songLoadSentence.classed('hidden', false);
+    },
+
+    _hideLoadingMessage: function() {
+        this._songInfoSentence.classed('hidden', false);
+        this._songLoadSentence.classed('hidden', true);
     }
 };
 

@@ -83,9 +83,19 @@ function createWorldMap() {
 
 function createAudioPlayer() {
     audioPlaylist = new AudioPlaylist(d3.select('#audio').node());
-    audioPlayer = new AudioPlayer(d3.select('#playTrack'), d3.select('#prevTrack'), d3.select('#nextTrack'),
-                                  d3.select('#songThumbnail'), 
-                                  d3.select('#songTitle'), d3.select('#songArtist'),
-                                  audioPlaylist);
+
+    audioPlayer = new AudioPlayer({
+        playButton: d3.select('#playTrack'),
+        prevButton: d3.select('#prevTrack'),
+        nextButton: d3.select('#nextTrack'),
+        thumbnailDiv: d3.select('#songThumbnail'),
+        songInfoSentence: d3.select('#songInfoSentence'),
+        titleSpan: d3.select('#songTitle'),
+        artistSpan: d3.select('#songArtist'),
+        songLoadSentence: d3.select('#songLoadSentence'),
+        loadingSpan: d3.select('#songLoad'),
+        playlist: audioPlaylist
+    });
+
     audioPlayer.init();
 }

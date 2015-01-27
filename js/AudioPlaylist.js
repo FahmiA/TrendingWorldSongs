@@ -1,4 +1,4 @@
-;;
+
 var AudioPlaylist = function(audioElement) {
     this._audio = audioElement;
     this._songs = [];
@@ -6,6 +6,7 @@ var AudioPlaylist = function(audioElement) {
 
     this._trackLoader = new TrackLoader();
 
+    this._playlistLoadCallback = null;
     this._songChangedCallback = null;
 
     this._audio.addEventListener('ended', this.nextSong.bind(this));
@@ -25,6 +26,12 @@ AudioPlaylist.prototype = {
         this.pause();
         this._songs.length = 0;
         this._index = -1;
+
+        /* It just so happens that clearing the playlist is AudioPlaylistLoader's way
+         * of saying it's going to load a new set of songs. */
+        if(this._playlistLoadCallback) {
+            this._playlistLoadCallback();
+        }
     },
 
     play: function() {
@@ -120,5 +127,9 @@ AudioPlaylist.prototype = {
 
     onSongChange: function(callback) {
         this._songChangedCallback = callback;
+    },
+
+    onPlaylistLoad: function(callback) {
+        this._playlistLoadCallback = callback;
     }
 };
