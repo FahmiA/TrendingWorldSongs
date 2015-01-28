@@ -18,8 +18,37 @@ AudioPlaylist.prototype = {
         this._songs.push(song);
     },
 
+    /** Take one song per artist and repeat. */
     shuffle: function() {
-        d3.shuffle(this._songs);
+        // d3.shuffle(this._songs);
+
+        var artistToSongs = {};
+        this._songs.forEach(function(song) {
+            var artist = song.getArtist();
+            if(artistToSongs[artist]) {
+                artistToSongs[artist].push(song);
+            }else{
+                artistToSongs[artist] = [song];
+            }
+        });
+
+        var artists = Object.keys(artistToSongs);
+        var maxSongs = artists.reduce(function(maxSongs, currentArtist) {
+            return Math.max(maxSongs, artistToSongs[currentArtist].length);
+        }, 0);
+
+        var songsShuffle = new Array(this._songs.length);
+        var insertIndex = 0;
+        for(var i = 0; i < maxSongs; i++) {
+            for(var j = 0; j < artists.length; j++) {
+                var artistSongs = artistToSongs[artists[j]];
+                if(i < artistSongs.length) {
+                    songsShuffle[insertIndex++] = artistSongs[i];
+                }
+            }
+        }
+
+        this._songs = songsShuffle;
     },
 
     clear: function() {
