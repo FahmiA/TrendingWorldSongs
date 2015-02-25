@@ -9,7 +9,11 @@ var AudioPlaylist = function(audioElement) {
     this._playlistLoadCallback = null;
     this._songChangedCallback = null;
 
+    // Song ended, play nest song
     this._audio.addEventListener('ended', this.nextSong.bind(this));
+
+    // Song could not be retrieved, play next song
+    this._audio.addEventListener('error', this._skipSongAndPlayNext.bind(this));
 };
 
 AudioPlaylist.prototype = {
@@ -63,8 +67,10 @@ AudioPlaylist.prototype = {
 
         console.log('next song index: ' + this._index);
         this._trackLoader.load(this._songs[this._index])
-            .then(this._playSongURL.bind(this))
-            .fail(this._removeSongAnContinueNext.bind(this));
+            .then(this._playOrSkipNextSong.bind(this))
+            .fail(this._notifyError);
+            //.then(this._playSongURL.bind(this))
+            //.fail(this._removeSongAnContinueNext.bind(this));
     },
 
     prevSong: function() {
@@ -84,6 +90,30 @@ AudioPlaylist.prototype = {
         this._trackLoader.load(this._songs[this._index])
             .then(this._playSongURL.bind(this))
             .fail(this._removeSongAnContinuePrev.bind(this));
+    },
+
+    _playOrSkipNextSong: function(url) {
+        if(url === undefined || url === null) {
+            // Remove the song from this playlist and try again
+            this._skipSongAndPlayNext();
+        }else{
+            // Play song
+            this._audio.src = this._trackLoader.getAuthenticatedURL(url);
+            this.play();
+
+            if(this._songChangedCallback) {
+                this._songChangedCallback(this._songs[this._index]);
+            }
+        }
+    },
+
+    _skipSongAndPlayNext: function() {
+        this._songs.splice(this._index--, 1);
+        this.nextSong();
+    },
+
+    _notifyError: function(message) {
+        alert(message);
     },
 
     _playSongURL: function(url) {
