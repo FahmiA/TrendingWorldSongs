@@ -4,7 +4,9 @@ var AudioPlayListLoader = function() {
 
 AudioPlayListLoader.prototype = {
     COUNTRY_QUERY_MAP: {
-        'united states of america': 'united states'
+        'united states of america': 'united states',
+        'united republic of tanzania': 'tanzania',
+        'republic of serbia': 'serbia'
     },
 
     loadPlaylist: function(audioPlaylist, countryName) {
