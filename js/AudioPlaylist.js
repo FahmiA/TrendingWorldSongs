@@ -68,9 +68,8 @@ AudioPlaylist.prototype = {
         console.log('next song index: ' + this._index);
         this._trackLoader.load(this._songs[this._index])
             .then(this._playOrSkipNextSong.bind(this))
-            .fail(this._notifyError);
-            //.then(this._playSongURL.bind(this))
-            //.fail(this._removeSongAnContinueNext.bind(this));
+            .fail(this._notifyError)
+            .done();
     },
 
     prevSong: function() {
@@ -89,7 +88,8 @@ AudioPlaylist.prototype = {
         console.log('previous song index: ' + this._index);
         this._trackLoader.load(this._songs[this._index])
             .then(this._playSongURL.bind(this))
-            .fail(this._removeSongAnContinuePrev.bind(this));
+            .fail(this._removeSongAnContinuePrev.bind(this))
+            .done();
     },
 
     _playOrSkipNextSong: function(url) {
@@ -112,8 +112,10 @@ AudioPlaylist.prototype = {
         this.nextSong();
     },
 
-    _notifyError: function(message) {
-        alert(message);
+    _notifyError: function(error) {
+        alert('Woops! There were problems trying to load the song. ' +
+              'Select another country or skip this song.');
+        console.error(error);
     },
 
     _playSongURL: function(url) {

@@ -28,13 +28,15 @@ function handleCountrySelect(countryElement, countryData) {
 
     audioPlayListLoader.loadPlaylist(audioPlaylist, countryName)
         .then(function() {
-            //alert('yay');
             audioPlaylist.play();
         })
-        .fail(function(message) {
-            alert(message || 'Oh no!');
-            console.log(arguments);
-        });
+        .fail(function(error) {
+            alert('Oh no! Something\'s gone wrong and a playlist for the ' + 
+                  'country can\'t be loaded. Please try another country or ' + 
+                  'try again at a later time.');
+            console.error(error);
+        })
+        .done();
 }
 
 function createWorldMap() {

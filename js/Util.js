@@ -4,7 +4,3 @@ var ArrayUtil = {
         return [].concat.apply([], array2D);
     }
 };
-
-var PromiseUtil = {
-    while: function(promise, condition) {} // ?
-};

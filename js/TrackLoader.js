@@ -110,7 +110,8 @@ TrackLoader.prototype = {
 
             deferred.resolve(song.getURL());
         }else{
-            deferred.reject('No preview URL for song ' + song.getName() + ' by ' + song.getArtist() + '.');
+            // Resolve with no URL
+            deferred.resolve();
         }
 
         return deferred.promise;

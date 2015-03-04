@@ -55,6 +55,7 @@ AudioPlayListLoader.prototype = {
             var artistName = artist.name;
             var artistId = artist.id;
             var artistURL = this._getURL(artist.urls);
+            artist.songs = artist.songs || []; // artist.songs may, on occasion, not exist
 
             artist.songs.forEach(function(song) {
                 var artistSongId = artistId + song.title;
@@ -78,7 +79,7 @@ AudioPlayListLoader.prototype = {
     },
 
     _getURL: function(urlJson) {
-        var url = '#';
+        var url = null;
         
         if(urlJson) {
             url = urlJson.wikipedia_url || urlJson.official_url || urlJson.lastfm_url || '#';
