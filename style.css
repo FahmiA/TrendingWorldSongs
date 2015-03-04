@@ -72,8 +72,16 @@ h1, h2, p, a {
     float: left;
 }
 
+#audioControlDetails p {
+    margin: 0px 0px 0px 0px;
+}
+
 #audioControlDetails span {
     font-weight: bold;
+}
+
+#countryName {
+    text-transform: capitalize;
 }
 
 #songThumbnail {
@@ -102,3 +110,8 @@ h1, h2, p, a {
 .country:hover {
     fill: green;
 }
+
+.hidden {
+    display: none;
+}
+

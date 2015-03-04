@@ -9,6 +9,7 @@
 <script src="js/lib/d3.v3.js"></script>
 <script src="js/lib/topojson.v1.js"></script>
 <script src="js/lib/oauth-signature.js"></script>
+<script src="js/lib/q-1.1.2.js"></script>
 
 <body>
     <div id="content">
@@ -33,11 +34,17 @@
             <div class="audioControlButton" id="prevTrack"></div>
             <div class="audioControlButton" id="playTrack"></div>
             <div class="audioControlButton" id="nextTrack"></div>
-            <p id="audioControlDetails">
-                Sampling popular music from <span id="countryName">nowhere</span>
-                <br/>
-                <span id="songTitle">something</span> by <a id="songArtist" href="#" target="_blank">someone</a>
-            </p>
+            <div id="audioControlDetails">
+                <p id="countryNameSentence">
+                    Sampling popular music from <span id="countryName">nowhere</span>
+                </p>
+                <p id="songInfoSentence">
+                    <span id="songTitle">something</span> by <a id="songArtist" href="#" target="_blank">someone</a>
+                </p>
+                <p id="songLoadSentence" class="hidden">
+                    <span id="songLoad">Twiddling some 1's and 0's ...</span>
+                </p>
+            </div>
         </div>
 
         <svg id="drawingArea">
@@ -62,9 +69,12 @@
     </div>
 </body>
 
+<script src="js/Util.js"></script>
 <script src="js/SimpleURL.js"></script>
-<script src="js/GeometryUtil.js"></script>
+<script src="js/Song.js"></script>
 <script src="js/AudioPlayer.js"></script>
 <script src="js/AudioPlaylist.js"></script>
+<script src="js/AudioPlayListLoader.js"></script>
+<script src="js/TrackLoader.js"></script>
 <script src="js/main.js"></script>
 

@@ -1,10 +1,14 @@
 
-var audioPlaylist = null;
-var audioPlayer = null;
 var ECHONEST_API_KEY = 'KVBFT8M5F51MGFGCF';
 
-createAudioPlayer();
-createWorldMap();
+var audioPlaylist = null;
+var audioPlayListLoader = new AudioPlayListLoader();
+var audioPlayer = null;
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+    createAudioPlayer();
+    createWorldMap();
+});
 
 function handleCountryDeselect(countryElement) {
     d3.select(countryElement)
@@ -16,52 +20,21 @@ function handleCountrySelect(countryElement, countryData) {
     d3.select(countryElement)
         .classed('country-selected', true);
 
-    //var country = countryData.properties.name.replace(/\W+/g, '+').toLowerCase();
-    var geometryUtil = new GeometryUtil();
-    var countryBounds = geometryUtil.getCountryBounds(countryData);
-    var echonestQuery = 'http://developer.echonest.com/api/v4/song/search' + 
-                            '?api_key=' + ECHONEST_API_KEY +
-                            '&format=json' +
-                            '&min_latitude=' + countryBounds.minLatitude +
-                            '&min_longitude=' + countryBounds.minLongitude +
-                            '&max_latitude=' + countryBounds.maxLatitude +
-                            '&max_longitude=' + countryBounds.maxLongitude +
-                            '&sort=song_hotttnesss-desc' + 
-                            '&bucket=id:7digital-US' +
-                            '&bucket=tracks';
-    //var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
-    //var echonestQuery = 'http://developer.echonest.com/api/v4/song/search?api_key=' + ECHONEST_API_KEY + '&format=json&description=location:' + country + '&sort=song_hotttnesss-desc&bucket=id:7digital-US&bucket=tracks';
-
-    d3.json(echonestQuery, function(error, data) {
-        if(!data || data.response.status.code !== 0) {
-            alert('Could not retrieve trending songs from ' + countryData.properties.name + '. Try again later.');
-            console.log(data);
-        }else{
-            // Update the songs to play
-            var songs = data.response.songs;
-            updateAudio(songs);
-
-            // Update the country display
-            d3.select('#countryName').text(countryData.properties.name);
-        }
-    });
-}
-
-function updateAudio(songs) {
     audioPlaylist.clear();
 
-    var song, track;
-    for(var i = 0; i < songs.length; i++) {
-        song = songs[i];
-        // Take only the first track
-        if(song.tracks.length > 0) {
-            track = song.tracks[0];
-            audioPlaylist.addSong(song.title, song.artist_name, song.artist_id,
-                                  track.preview_url, track.release_image);
-        }
-    }
-    
-    audioPlaylist.play();
+    var countryName = countryData.properties.name.toLowerCase();
+
+    d3.select('#countryName').text(countryName);
+
+    audioPlayListLoader.loadPlaylist(audioPlaylist, countryName)
+        .then(function() {
+            //alert('yay');
+            audioPlaylist.play();
+        })
+        .fail(function(message) {
+            alert(message || 'Oh no!');
+            console.log(arguments);
+        });
 }
 
 function createWorldMap() {
@@ -95,8 +68,9 @@ function createWorldMap() {
             .attr('d', path)
             .attr('class', 'country')
             .on('mouseup', function(d) {
-                if(prevCountryElement)
+                if(prevCountryElement) {
                     handleCountryDeselect(prevCountryElement);
+                }
                 handleCountrySelect(this, d);
                 prevCountryElement = this;
             })
@@ -109,9 +83,19 @@ function createWorldMap() {
 
 function createAudioPlayer() {
     audioPlaylist = new AudioPlaylist(d3.select('#audio').node());
-    audioPlayer = new AudioPlayer(d3.select('#playTrack'), d3.select('#prevTrack'), d3.select('#nextTrack'),
-                                  d3.select('#songThumbnail'), 
-                                  d3.select('#songTitle'), d3.select('#songArtist'),
-                                  audioPlaylist);
+
+    audioPlayer = new AudioPlayer({
+        playButton: d3.select('#playTrack'),
+        prevButton: d3.select('#prevTrack'),
+        nextButton: d3.select('#nextTrack'),
+        thumbnailDiv: d3.select('#songThumbnail'),
+        songInfoSentence: d3.select('#songInfoSentence'),
+        titleSpan: d3.select('#songTitle'),
+        artistSpan: d3.select('#songArtist'),
+        songLoadSentence: d3.select('#songLoadSentence'),
+        loadingSpan: d3.select('#songLoad'),
+        playlist: audioPlaylist
+    });
+
     audioPlayer.init();
 }

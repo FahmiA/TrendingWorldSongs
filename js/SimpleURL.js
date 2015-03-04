@@ -11,6 +11,8 @@ SimpleURL.prototype = {
             key: key,
             value: value
         });
+
+        return this;
     },
 
     encodeParameters: function() {
