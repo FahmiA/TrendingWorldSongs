@@ -29,8 +29,9 @@ AudioPlayListLoader.prototype = {
 
         var deferred = Q.defer();
         d3.json(echonestQuery, function(error, data) {
-            if(!data || data.response.status.code !== 0) {
-                deferred.reject('Could not retrieve trending songs from ' + countryName + '. Please try again later.');
+            var errorMessage = EchoNestUtil.validateResponse(data, countryName);
+            if(errorMessage) {
+                deferred.reject(errorMessage);
             }else{
                 deferred.resolve(data.response.artists);
             }
