@@ -38,7 +38,8 @@ TrackLoader.prototype = {
             oauth_nonce : +new Date(), // Generate a random number
             oauth_timestamp : parseInt(new Date().getTime() / 1000), // Divide by 1000 to get seconds
             oauth_signature_method : 'HMAC-SHA1',
-            oauth_version : '1.0'
+            oauth_version : '1.0',
+            country: 'GB' // 7Digital requires an additional country code parameter which the EchoNest does not provide
         };
         var consumerSecret = '5wnnqdvnpdfrehfv';
         var tokenSecret = '';
@@ -53,6 +54,7 @@ TrackLoader.prototype = {
         simpleURL.addParameter('oauth_signature_method', parameters.oauth_signature_method);
         simpleURL.addParameter('oauth_signature', encodeSignature);
         simpleURL.addParameter('oauth_version', parameters.oauth_version);
+        simpleURL.addParameter('country', parameters.country);
 
         url = simpleURL.toString();
 
@@ -72,8 +74,9 @@ TrackLoader.prototype = {
 
         var deferred = Q.defer();
         d3.json(echonestQuery, function(error, data) {
-            if(!data || data.response.status.code !== 0) {
-                deferred.reject('Could not retrieve song track.');
+            var errorMessage = EchoNestUtil.validateResponse(data);
+            if(errorMessage) {
+                deferred.reject(errorMessage);
             }else{
                 deferred.resolve(data.response.songs[0].tracks);
             }
@@ -110,7 +113,7 @@ TrackLoader.prototype = {
 
             deferred.resolve(song.getURL());
         }else{
-            // Resolve with no URL
+            // No song URL (don't reject, as this is reserved for actual errors)
             deferred.resolve();
         }
 
