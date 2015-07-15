@@ -40,14 +40,9 @@ function handleCountrySelect(countryElement, countryData) {
 }
 
 function createWorldMap() {
-    // The map dimensions
-    var mapWidth = 960;
-    var mapHeight = 480;
-
     // Details of the map projection
-    var projection = d3.geo.equirectangular()
+    var projection = d3.geo.mercator()
         .scale(153)
-        .translate([mapWidth / 2, mapHeight / 2])
         .precision(0.1);
 
     var path = d3.geo.path()
