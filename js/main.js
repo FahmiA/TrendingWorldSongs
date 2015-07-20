@@ -7,7 +7,26 @@ var audioPlayer = null;
 
 document.addEventListener("DOMContentLoaded", function(event) { 
     createAudioPlayer();
-    createWorldMap();
+    //createWorldMap();
+    var prevCountryElement;
+    
+    var drawingArea = document.getElementById("drawingArea");
+    var svgDoc = drawingArea.contentDocument;
+    d3.select(svgDoc).select('#Countries').selectAll('g')
+        .on('click', function() {
+            var countryName = this.id;
+
+            if(prevCountryElement) {
+                handleCountryDeselect(prevCountryElement);
+            }
+            var d = {
+                properties: {
+                    name: countryName
+                }
+            };
+            handleCountrySelect(this, d);
+            prevCountryElement = this;
+        });
 });
 
 function handleCountryDeselect(countryElement) {
