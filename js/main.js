@@ -7,26 +7,9 @@ var audioPlayer = null;
 
 document.addEventListener("DOMContentLoaded", function(event) { 
     createAudioPlayer();
-    //createWorldMap();
-    var prevCountryElement;
     
     var drawingArea = document.getElementById("drawingArea");
-    var svgDoc = drawingArea.contentDocument;
-    d3.select(svgDoc).select('#Countries').selectAll('g')
-        .on('click', function() {
-            var countryName = this.id;
-
-            if(prevCountryElement) {
-                handleCountryDeselect(prevCountryElement);
-            }
-            var d = {
-                properties: {
-                    name: countryName
-                }
-            };
-            handleCountrySelect(this, d);
-            prevCountryElement = this;
-        });
+    drawingArea.addEventListener('load', connectWorldMap);
 });
 
 function handleCountryDeselect(countryElement) {
@@ -58,43 +41,26 @@ function handleCountrySelect(countryElement, countryData) {
         .done();
 }
 
-function createWorldMap() {
-    // Details of the map projection
-    var projection = d3.geo.mercator()
-        .scale(153)
-        .precision(0.1);
+function connectWorldMap() {
+    console.log('World map loaded');
 
-    var path = d3.geo.path()
-        .projection(projection);
+    var prevCountryElement;
+    var svgDoc = drawingArea.contentDocument;
+    d3.select(svgDoc).select('#Countries').selectAll('g')
+        .on('click', function() {
+            var countryName = this.id;
 
-    // Load the map data and draw the map
-    var svg = d3.select('#drawingArea');
-    d3.json("data/worldMap.json", function(error, world) {
-        if(!world) {
-            alert('Could not load world map. Try again later.');
-            console.log(world);
-            return;
-        }
-
-        var prevCountryElement;
-        svg.selectAll('path')
-            .data(world.features)
-            .enter()
-            .append('path')
-            .attr('d', path)
-            .attr('class', 'country')
-            .on('mouseup', function(d) {
-                if(prevCountryElement) {
-                    handleCountryDeselect(prevCountryElement);
+            if(prevCountryElement) {
+                handleCountryDeselect(prevCountryElement);
+            }
+            var d = {
+                properties: {
+                    name: countryName
                 }
-                handleCountrySelect(this, d);
-                prevCountryElement = this;
-            })
-            .append('title')
-            .text(function(d) {
-                return d.properties.name;
-            });
-    });
+            };
+            handleCountrySelect(this, d);
+            prevCountryElement = this;
+        });
 }
 
 function createAudioPlayer() {
