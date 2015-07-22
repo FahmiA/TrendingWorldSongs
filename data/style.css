@@ -1,3 +1,8 @@
 #Countries > g:hover{
     stroke: green;
 }
+
+
+.country-selected {
+    stroke: green;
+}
