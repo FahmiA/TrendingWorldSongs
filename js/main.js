@@ -5,6 +5,8 @@ var audioPlaylist = null;
 var audioPlayListLoader = new AudioPlayListLoader();
 var audioPlayer = null;
 
+var prevCountryElement = null;
+
 document.addEventListener("DOMContentLoaded", function(event) { 
     createAudioPlayer();
     
@@ -12,19 +14,30 @@ document.addEventListener("DOMContentLoaded", function(event) {
     drawingArea.addEventListener('load', connectWorldMap);
 });
 
+function handleCountryClick() {
+    var countryName = this.id;
+
+    if(prevCountryElement) {
+        handleCountryDeselect(prevCountryElement);
+    }
+
+    handleCountrySelect(this, countryName);
+    prevCountryElement = this;
+}
+
 function handleCountryDeselect(countryElement) {
     d3.select(countryElement)
         .classed('country-selected', false);
 }
 
-function handleCountrySelect(countryElement, countryData) {
+function handleCountrySelect(countryElement, countryName) {
+    countryName = countryName.toLowerCase();
+
     // Display the country as selected
     d3.select(countryElement)
         .classed('country-selected', true);
 
     audioPlaylist.clear();
-
-    var countryName = countryData.properties.name.toLowerCase();
 
     d3.select('#countryName').text(countryName);
 
@@ -44,23 +57,9 @@ function handleCountrySelect(countryElement, countryData) {
 function connectWorldMap() {
     console.log('World map loaded');
 
-    var prevCountryElement;
     var svgDoc = drawingArea.contentDocument;
     d3.select(svgDoc).select('#Countries').selectAll('g')
-        .on('click', function() {
-            var countryName = this.id;
-
-            if(prevCountryElement) {
-                handleCountryDeselect(prevCountryElement);
-            }
-            var d = {
-                properties: {
-                    name: countryName
-                }
-            };
-            handleCountrySelect(this, d);
-            prevCountryElement = this;
-        });
+        .on('click', debounce(handleCountryClick));
 }
 
 function createAudioPlayer() {
@@ -80,4 +79,19 @@ function createAudioPlayer() {
     });
 
     audioPlayer.init();
+}
+
+function debounce(fn, delay) {
+// http://codereview.stackexchange.com/questions/58406/function-buffer-to-avoid-triggering-an-event-handler-too-frequently
+    var timeout;
+
+    return function () {
+        var context = this,
+            args = arguments;
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            fn.apply(context, args);
+        }, delay || 250);
+    };
 }
