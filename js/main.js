@@ -32,6 +32,7 @@ function handleCountryDeselect(countryElement) {
 
 function handleCountrySelect(countryElement, countryName) {
     countryName = countryName.toLowerCase();
+    countryName = countryName.replace(/_/g, ' ');
 
     // Display the country as selected
     d3.select(countryElement)
@@ -59,7 +60,11 @@ function connectWorldMap() {
 
     var svgDoc = drawingArea.contentDocument;
     d3.select(svgDoc).select('#Countries').selectAll('g')
-        .on('click', debounce(handleCountryClick));
+        .on('click', debounce(handleCountryClick))
+        .append('title')
+        .text(function() {
+            return this.parentElement.id.replace(/_/g, ' ');
+        });
 }
 
 function createAudioPlayer() {
