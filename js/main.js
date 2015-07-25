@@ -46,13 +46,12 @@ function handleCountrySelect(countryElement, countryName) {
         .then(function() {
             audioPlaylist.play();
         })
-        .fail(function(error) {
+        .catch(function(error) {
             alert('Oh no! Something\'s gone wrong and a playlist for the ' + 
                   'country can\'t be loaded. Please try another country or ' + 
                   'try again at a later time.');
             console.error(error);
-        })
-        .done();
+        });
 }
 
 function connectWorldMap() {

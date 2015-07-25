@@ -27,17 +27,16 @@ AudioPlayListLoader.prototype = {
 
         var echonestQuery = url.toString();
 
-        var deferred = Q.defer();
-        d3.json(echonestQuery, function(error, data) {
-            var errorMessage = EchoNestUtil.validateResponse(data, countryName);
-            if(errorMessage) {
-                deferred.reject(errorMessage);
-            }else{
-                deferred.resolve(data.response.artists);
-            }
+        return new Promise(function(resolve, reject) {
+            d3.json(echonestQuery, function(error, data) {
+                var errorMessage = EchoNestUtil.validateResponse(data, countryName);
+                if(errorMessage) {
+                    reject(errorMessage);
+                }else{
+                    resolve(data.response.artists);
+                }
+            });
         });
-
-        return deferred.promise;
     },
 
     _getQueryableCountryName: function(countryName) {
@@ -49,8 +48,6 @@ AudioPlayListLoader.prototype = {
     },
 
     _getSongs: function(artistsJson) {
-        var deferred = Q.defer();
-
         var songsList = [];
         var songsMap = {};
 
@@ -76,9 +73,7 @@ AudioPlayListLoader.prototype = {
             });
         }.bind(this));
 
-        deferred.resolve(songsList);
-
-        return deferred.promise;
+        return Promise.resolve(songsList);
     },
 
     _getURL: function(urlJson) {

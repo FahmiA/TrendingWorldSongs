@@ -2,28 +2,21 @@
 var TrackLoader = function() {
 };
 
-// TODO: Don't manually create deferreds, this can be an anti-pattern: https://github.com/petkaantonov/bluebird/wiki/Promise-anti-patterns#the-deferred-anti-pattern
 TrackLoader.prototype = {
     load: function(song) {
-        var deferred = Q.defer();
-
         console.log('Retrieving info for song ' + song.toString());
         if(song.hasURL()) {
             console.log('    URL cached: ' + song.getURL());
             // Retrieve the cached URL
-            deferred.resolve(song.getURL());
-        } else {
-            console.log('   Fetching URL for first time with ids: ' + JSON.stringify(song.getIds()));
-            // Fetch the URL
-            var urlRetrievalPromises = song.getIds().map(this._getTracks);
-            var promise = Q.allSettled(urlRetrievalPromises)
-                .then(this._filterTracks)
-                .then(this._updateSong.bind(this, song));
-
-            deferred.resolve(promise);
+            return Promise.resolve(song.getURL());
         }
 
-        return deferred.promise;
+        console.log('   Fetching URL for first time with ids: ' + JSON.stringify(song.getIds()));
+        // Fetch the URL
+        var urlRetrievalPromises = song.getIds().map(this._getTracks);
+        return Promise.all(urlRetrievalPromises)
+                .then(this._filterTracks)
+                .then(this._updateSong.bind(this, song));
     },
 
     getAuthenticatedURL: function(url) {
@@ -72,52 +65,36 @@ TrackLoader.prototype = {
 
         var echonestQuery = url.toString();
 
-        var deferred = Q.defer();
-        d3.json(echonestQuery, function(error, data) {
-            var errorMessage = EchoNestUtil.validateResponse(data);
-            if(errorMessage) {
-                deferred.reject(errorMessage);
-            }else{
-                deferred.resolve(data.response.songs[0].tracks);
-            }
+        return new Promise(function(resolve, reject) {
+            d3.json(echonestQuery, function(error, data) {
+                var errorMessage = EchoNestUtil.validateResponse(data);
+                if(errorMessage) {
+                    reject(errorMessage);
+                }else{
+                    resolve(data.response.songs[0].tracks);
+                }
+            });
         });
-
-        return deferred.promise;
     },
 
-    _filterTracks: function(trackResponses) {
-        // Find all responses which succeeded and have tracks (some songs don't have preview tracks).
-        var successResponses = trackResponses.filter(function(trackResponse) {
-            return trackResponse.state === 'fulfilled' && trackResponse.value.length > 0;
-        });
-
-        // Extract just the tracks from the successful responses
-        var tracks = successResponses.map(function(successResponse) {
-                return successResponse.value;
-            });
+    _filterTracks: function(tracks) {
         tracks = ArrayUtil.flatten(tracks);
 
-        var deferred = Q.defer();
-        deferred.resolve(tracks);
-        return deferred.promise;
+        return Promise.resolve(tracks);
     },
     
     _updateSong: function(song, tracks) {
-        var deferred = Q.defer();
-
         console.log('        tracks found: ' + tracks.length);
         if(tracks.length > 0) {
             var track = tracks[0]; // Just take the first track
             song.setURL(track.preview_url);
             song.setAlbumCoverURL(track.release_image);
 
-            deferred.resolve(song.getURL());
-        }else{
-            // No song URL (don't reject, as this is reserved for actual errors)
-            deferred.resolve();
+            return Promise.resolve(song.getURL());
         }
 
-        return deferred.promise;
+        // No song URL (don't reject, as this is reserved for actual errors)
+        return Promise.resolve();
     },
 };
 

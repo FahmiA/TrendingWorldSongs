@@ -68,8 +68,7 @@ AudioPlaylist.prototype = {
         console.log('next song index: ' + this._index);
         this._trackLoader.load(this._songs[this._index])
             .then(this._playOrSkipNextSong.bind(this))
-            .fail(this._notifyError)
-            .done();
+            .catch(this._notifyError);
     },
 
     prevSong: function() {
@@ -88,8 +87,7 @@ AudioPlaylist.prototype = {
         console.log('previous song index: ' + this._index);
         this._trackLoader.load(this._songs[this._index])
             .then(this._playSongURL.bind(this))
-            .fail(this._removeSongAnContinuePrev.bind(this))
-            .done();
+            .catch(this._removeSongAnContinuePrev.bind(this));
     },
 
     _playOrSkipNextSong: function(url) {
