@@ -62,7 +62,7 @@ function connectWorldMap() {
         .on('click', debounce(handleCountryClick))
         .append('title')
         .text(function() {
-            return this.parentElement.id.replace(/_/g, ' ');
+            return this.parentNode.id.replace(/_/g, ' ');
         });
 }
 
