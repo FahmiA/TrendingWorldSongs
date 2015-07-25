@@ -15,8 +15,10 @@ h1, h2, p, a {
 }
 
 #audioControl {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 50px;
-    display: none;
 }
 
 .audioControlButton {
