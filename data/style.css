@@ -6,3 +6,7 @@
 .country-selected {
     stroke: green;
 }
+
+#Lakes {
+    display: none;
+}
