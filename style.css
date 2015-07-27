@@ -16,8 +16,8 @@ h1, h2, p, a {
 
 #audioControl {
     position: absolute;
-    left: 0;
-    top: 0;
+    left: calc(50% - 200px);
+    bottom: 30px;
     height: 50px;
 }
 

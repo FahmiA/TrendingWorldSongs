@@ -1,4 +1,8 @@
-#Countries > g:hover{
+#Countries > g {
+    stroke-width: 0.5;
+}
+
+#Countries > g:hover {
     stroke: red;
     z-index: 1000;
 }
