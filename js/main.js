@@ -12,19 +12,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     var drawingArea = document.getElementById("drawingArea");
     drawingArea.addEventListener('load', connectWorldMap);
-
-    var noteObject = document.getElementById('note-object');
-    drawingArea.addEventListener('load', function() {
-        var notePath = noteObject.contentDocument.querySelector('path');
-        console.log(notePath);
-
-        d3.select(drawingArea.contentDocument)
-            .select('#Mexico')
-            .forEach(function(countries) {
-                var country = countries[0];
-                country.appendChild(notePath);
-            });
-    });
 });
 
 function handleCountryClick() {
@@ -34,8 +21,26 @@ function handleCountryClick() {
         handleCountryDeselect(prevCountryElement);
     }
 
+    displayNote(this);
     handleCountrySelect(this, countryName);
     prevCountryElement = this;
+}
+
+function displayNote(element) {
+    var note = document.getElementById('note');
+    if(!note) {
+        return;
+    }
+
+    var box = element.getBoundingClientRect();
+    var noteHeight = 50;
+    var noteWidth = 50;
+    d3.select(note)
+        .classed('hidden', false)
+        .style('left', (box.left + (box.width / 2) -  (noteWidth / 2)) + 'px')
+        .style('top', (box.top + (box.height / 2) -  (noteHeight / 2)) + 'px')
+        .style('width', noteWidth + 'px')
+        .style('height', noteHeight + 'px');
 }
 
 function handleCountryDeselect(countryElement) {

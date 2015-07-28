@@ -88,6 +88,10 @@ h1, h2, p, a {
     height: 100%;
 }
 
+#note {
+    position: absolute;
+}
+
 .hidden {
     display: none;
 }
