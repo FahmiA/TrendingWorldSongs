@@ -12,6 +12,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     var drawingArea = document.getElementById("drawingArea");
     drawingArea.addEventListener('load', connectWorldMap);
+
+    var noteObject = document.getElementById('note-object');
+    drawingArea.addEventListener('load', function() {
+        var notePath = noteObject.contentDocument.querySelector('path');
+        console.log(notePath);
+
+        d3.select(drawingArea.contentDocument)
+            .select('#Mexico')
+            .forEach(function(countries) {
+                var country = countries[0];
+                country.appendChild(notePath);
+            });
+    });
 });
 
 function handleCountryClick() {
