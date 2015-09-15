@@ -1,10 +1,11 @@
 #Countries > g {
-    stroke-width: 0.5;
+    stroke-width: 0.2;
+    stroke: black;
 }
 
 #Countries > g:hover {
+    stroke-width: 0.5;
     stroke: red;
-    z-index: 1000;
 }
 
 .country-selected {
