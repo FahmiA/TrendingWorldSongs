@@ -11,6 +11,14 @@
     stroke: red;
 }
 
+#scribbles > g {
+    display: none;
+}
+
+#scribbles > g.scribble-selected {
+    display: initial;
+}
+
 #Lakes {
     display: none;
 }

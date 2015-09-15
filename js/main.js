@@ -49,18 +49,27 @@ function handleCountryDeselect(countryElement) {
 }
 
 function handleCountrySelect(countryElement, countryName) {
-    countryName = countryName.toLowerCase();
-    countryName = countryName.replace(/_/g, ' ');
+    var niceCountryName = countryName.toLowerCase();
+    niceCountryName = niceCountryName.replace(/_/g, ' ');
 
     // Display the country as selected
     d3.select(countryElement)
         .classed('country-selected', true);
 
+    // Hide all scribbles
+    var svgDoc = drawingArea.contentDocument;
+    var scribbles = d3.select(svgDoc).select('#scribbles').selectAll('g');
+    scribbles.classed('scribble-selected', false);
+
+    var scribbleId = '#S-' + countryName;
+    var selectedScribble = d3.select(svgDoc).select('#scribbles').select(scribbleId);
+    selectedScribble.classed('scribble-selected', true);
+
     audioPlaylist.clear();
 
-    d3.select('#countryName').text(countryName);
+    d3.select('#countryName').text(niceCountryName);
 
-    audioPlayListLoader.loadPlaylist(audioPlaylist, countryName)
+    audioPlayListLoader.loadPlaylist(audioPlaylist, niceCountryName)
         .then(function() {
             audioPlaylist.play();
         })
