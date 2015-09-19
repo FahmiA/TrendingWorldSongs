@@ -3,6 +3,11 @@
     stroke: black;
 }
 
+#Countries > g path,
+#Countries > g > polygon {
+    fill: white !important;
+}
+
 #Countries > g:hover {
     stroke-width: 0.5;
     stroke: red;
@@ -12,12 +17,8 @@
     stroke: red;
 }
 
-#scribbles > g {
-    display: none;
-}
-
 #scribbles > g.scribble-selected {
-    display: initial;
+    display: none;
 }
 
 #Lakes {
