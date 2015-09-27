@@ -54,7 +54,7 @@ TrackLoader.prototype = {
     },
 
     _getSongs: function(artist) {
-        var url = new SimpleURL('http://developer.echonest.com/api/v4/song/search');
+        var url = new SimpleURL('http://128.199.193.50:6081/api/v4/song/search');
         url.addParameter('api_key', ECHONEST_API_KEY)
            .addParameter('artist_id', artist.getId())
            .addParameter('sort', 'song_hotttnesss-desc')

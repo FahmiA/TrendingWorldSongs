@@ -36,6 +36,7 @@ AudioPlaylist.prototype = {
 
     clear: function() {
         this.pause();
+        this._audio.src = null;
 
         this._availableArtistMap = {};
         this._playableArtists = [];
