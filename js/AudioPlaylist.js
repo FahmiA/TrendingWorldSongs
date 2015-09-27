@@ -7,7 +7,9 @@ var AudioPlaylist = function(audioElement) {
 
     this._playableArtists = [];
     this._artistSongMap = {}; // Artist ID to array of song objects
+
     this._playedSongs = [];
+    this._playedSongsIndex = -1;
 
     this._trackLoader = new TrackLoader();
 
@@ -27,14 +29,6 @@ AudioPlaylist.prototype = {
         this._availableArtistMap[artist.getId()] = artist;
         this._playableArtists.push(artist);
     },
-
-    //addSong: function(song) {
-    //    this._songs.push(song);
-    //},
-
-    //shuffle: function() {
-    //    d3.shuffle(this._songs);
-    //},
 
     clear: function() {
         console.log("AudioPlaylist.clear(): Implement!");
@@ -71,31 +65,33 @@ AudioPlaylist.prototype = {
         
         this.pause();
 
-        var artistIndex = parseInt(Math.random() * this._playableArtists.length);
-        var artist = this._playableArtists[artistIndex];
+        if(this.hasNextSong()) {
+            this._playedSongsIndex++;
+            var song = this._playedSongs[this._playedSongsIndex];
 
-        this._loadArtistSongs(artist)
-            .then(this._playArtistSong.bind(this))
-            .catch(this._notifyError);
+            this._playSong(song);
+        } else {
+            var artistIndex = parseInt(Math.random() * this._playableArtists.length);
+            var artist = this._playableArtists[artistIndex];
+
+            this._loadArtistSongs(artist)
+                .then(this._playArtistSong.bind(this, artistIndex))
+                .catch(this._notifyError);
+        }
     },
 
     prevSong: function() {
-        if(!this.hasSongs()) {
-            alert('No songs found for country. Please select another country or try again later.');
+        this.pause();
+
+        if (!this.hasPrevSong()) {
             return;
         }
-        
-        this.pause();
-        if (this.hasPrevSong()) {
-            this._index--;
-        } else {
-            this._index = this.size() - 1;
-        }
 
-        console.log('previous song index: ' + this._index);
-        this._trackLoader.load(this._songs[this._index])
-            .then(this._playSongURL.bind(this))
-            .catch(this._removeSongAnContinuePrev.bind(this));
+        this._playedSongsIndex--;
+        var song = this._playedSongs[this._playedSongsIndex];
+        console.log('Previous song index: ' + this._playedSongsIndex);
+
+        this._playSong(song);
     },
 
     _loadArtistSongs: function(artist) {
@@ -117,7 +113,7 @@ AudioPlaylist.prototype = {
         return artist;
     },
 
-    _playArtistSong: function(artist) {
+    _playArtistSong: function(artistIndex, artist) {
         var loadedUnplayedSongs = this._artistSongMap[artist.getId()];
 
         if(loadedUnplayedSongs.length === 0) {
@@ -145,14 +141,10 @@ AudioPlaylist.prototype = {
             this._skipSongAndPlayNext();
         }else{
             // Play song
-            this._audio.src = this._trackLoader.getAuthenticatedURL(url);
-            this.play();
+            this._playSong(song);
 
             this._playedSongs.push(song);
-
-            if(this._songChangedCallback) {
-                this._songChangedCallback(song);
-            }
+            this._playedSongsIndex = this._playedSongs.length - 1;
         }
     },
 
@@ -166,12 +158,12 @@ AudioPlaylist.prototype = {
         console.error(error);
     },
 
-    _playSongURL: function(url) {
-        this._audio.src = this._trackLoader.getAuthenticatedURL(url);
+    _playSong: function(song) {
+        this._audio.src = this._trackLoader.getAuthenticatedURL(song.getURL());
         this.play();
 
         if(this._songChangedCallback) {
-            this._songChangedCallback(this._songs[this._index]);
+            this._songChangedCallback(song);
         }
     },
 
@@ -194,15 +186,11 @@ AudioPlaylist.prototype = {
     },
 
     hasNextSong: function() {
-        return this._index + 1 < this.size();
+        return this._playedSongsIndex < this._playedSongs.length - 1;
     },
 
     hasPrevSong: function() {
-        return this._index > 0;
-    },
-
-    size: function() {
-        return this._songs.length;
+        return this._playedSongsIndex > 0;
     },
 
     onSongChange: function(callback) {
