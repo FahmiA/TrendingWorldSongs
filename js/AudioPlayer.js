@@ -85,15 +85,14 @@ AudioPlayer.prototype = {
         this._hideLoadingMessage();
 
         this._titleSpan.text(song.getName());
-        this._artistSpan.text(song.getArtist());
+        this._artistSpan.text(song.getArtist().getName());
         this._thumbnailDiv.style('background-image', 'url(' + song.getAlbumCoverURL() + ')');
 
         this._enablePlayButton();
         this._enableNextButton();
         this._enablePrevButton();
 
-        //this._artistSpan.attr('href', song.getArtistURL());
-        this._artistSpan.attr('href', '#');
+        this._artistSpan.attr('href', song.getArtist().getURL());
     },
 
     _showLoadingMessage: function() {

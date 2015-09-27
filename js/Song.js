@@ -49,7 +49,7 @@ Song.prototype = {
     },
 
     toString: function() {
-        return this.getName() + ' by ' + this.getArtist();
+        return this.getName() + ' by ' + this.getArtist().getName();
     }
 };
 

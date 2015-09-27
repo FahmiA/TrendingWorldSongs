@@ -1,7 +1,8 @@
 
-var Artist = function(name, id) {
+var Artist = function(name, id, url) {
     this._name = name;
     this._id = id;
+    this._url = url;
 
     this._songs = [];
     this._songsLoaded = false;
@@ -14,6 +15,10 @@ Artist.prototype = {
 
     getId: function() {
         return this._id;
+    },
+
+    getURL: function() {
+        return this._url;
     },
 
     getSongs: function() {

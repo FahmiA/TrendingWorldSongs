@@ -22,7 +22,6 @@ AudioPlayListLoader.prototype = {
         url.addParameter('api_key', ECHONEST_API_KEY)
            .addParameter('artist_location', '^' + queryableCountryName)
            .addParameter('sort', 'hotttnesss-desc')
-           .addParameter('bucket', 'songs')
            .addParameter('bucket', 'urls');
 
         var echonestQuery = url.toString();
@@ -49,44 +48,18 @@ AudioPlayListLoader.prototype = {
 
     _getArtists: function(artistsJson) {
         var artists = artistsJson.map(function(artistJson) {
-            return new Artist(artistJson.name, artistJson.id);
-        });
+            var url = this._getURL(artistJson.urls);
+            return new Artist(artistJson.name, artistJson.id, url);
+        }, this);
 
         return artists;
     },
 
-    //_getSongs: function(artistsJson) {
-    //    var songsList = [];
-    //    var songsMap = {};
-
-    //    artistsJson.forEach(function(artist) {
-    //        var artistName = artist.name;
-    //        var artistId = artist.id;
-    //        var artistURL = this._getURL(artist.urls);
-    //        artist.songs = artist.songs || []; // artist.songs may, on occasion, not exist
-
-    //        artist.songs.forEach(function(song) {
-    //            var artistSongId = artistId + song.title;
-
-    //            var songObj = songsMap[artistSongId];
-    //            if(!songObj) {
-    //                songObj = new Song(song.title, song.id, artistName, artistURL);
-
-    //                songsList.push(songObj);
-    //                songsMap[artistSongId] = songObj;
-
-    //            }
-    //        });
-    //    }.bind(this));
-
-    //    return Promise.resolve(songsList);
-    //},
-
     _getURL: function(urlJson) {
-        var url = null;
+        var url = '#';
         
         if(urlJson) {
-            url = urlJson.wikipedia_url || urlJson.official_url || urlJson.lastfm_url || '#';
+            url = urlJson.wikipedia_url || urlJson.official_url || urlJson.lastfm_url;
         }
 
         return url;
@@ -96,8 +69,6 @@ AudioPlayListLoader.prototype = {
         artists.forEach(function(artist) {
             audioPlaylist.addArtist(artist);
         });
-
-        //audioPlaylist.shuffle();
     },
 
 };

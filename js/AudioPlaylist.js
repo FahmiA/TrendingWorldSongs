@@ -1,16 +1,20 @@
 
 var AudioPlaylist = function(audioElement) {
     this._audio = audioElement;
-    //this._songs = [];
-    //this._index = -1; // Index of song currently being played
-    this._availableArtistMap = {}; // Artist ID to Artist object
 
+    // All artists (Artist ID to Artist object)
+    this._availableArtistMap = {};
+
+    // All artists that still have unplayed songs
     this._playableArtists = [];
-    this._artistSongMap = {}; // Artist ID to array of song objects
 
-    this._playedSongs = [];
-    this._playedSongsIndex = -1;
+    // All unplayed songs (Artist ID to array of song objects)
+    this._artistSongMap = {};
 
+    // Played songs for navigating backwards and forwards
+    this._songHistory = new History();
+
+    // Loads artist songs
     this._trackLoader = new TrackLoader();
 
     this._playlistLoadCallback = null;
@@ -20,7 +24,7 @@ var AudioPlaylist = function(audioElement) {
     this._audio.addEventListener('ended', this.nextSong.bind(this));
 
     // Song could not be retrieved, play next song
-    this._audio.addEventListener('error', this._skipSongAndPlayNext.bind(this));
+    this._audio.addEventListener('error', this.nextSong.bind(this));
 };
 
 AudioPlaylist.prototype = {
@@ -31,16 +35,19 @@ AudioPlaylist.prototype = {
     },
 
     clear: function() {
-        console.log("AudioPlaylist.clear(): Implement!");
-        //this.pause();
-        //this._songs.length = 0;
-        //this._index = -1;
+        this.pause();
+
+        this._availableArtistMap = {};
+        this._playableArtists = [];
+        this._artistSongMap = {};
+
+        this._songHistory.reset();
 
         /* It just so happens that clearing the playlist is AudioPlaylistLoader's way
          * of saying it's going to load a new set of songs. */
-        //if(this._playlistLoadCallback) {
-        //    this._playlistLoadCallback();
-        //}
+        if(this._playlistLoadCallback) {
+            this._playlistLoadCallback();
+        }
     },
 
     play: function() {
@@ -65,10 +72,9 @@ AudioPlaylist.prototype = {
         
         this.pause();
 
-        if(this.hasNextSong()) {
-            this._playedSongsIndex++;
-            var song = this._playedSongs[this._playedSongsIndex];
-
+        if(this._songHistory.hasNext()) {
+            var song = this._songHistory.getNext();
+            console.log('Playing next song in history: ' + song.toString());
             this._playSong(song);
         } else {
             var artistIndex = parseInt(Math.random() * this._playableArtists.length);
@@ -81,15 +87,14 @@ AudioPlaylist.prototype = {
     },
 
     prevSong: function() {
-        this.pause();
-
-        if (!this.hasPrevSong()) {
+        if (!this._songHistory.hasPrevious()) {
             return;
         }
 
-        this._playedSongsIndex--;
-        var song = this._playedSongs[this._playedSongsIndex];
-        console.log('Previous song index: ' + this._playedSongsIndex);
+        this.pause();
+
+        var song = this._songHistory.getPrevious();
+        console.log('Playing previous song in history: ' + song.toString());
 
         this._playSong(song);
     },
@@ -127,10 +132,11 @@ AudioPlaylist.prototype = {
         loadedUnplayedSongs.splice(songIndex, 1);
 
         if(loadedUnplayedSongs.length === 0) {
-            // There are not more unplayed songs by the artist
+            // There are no more unplayed songs by the artist
             this._playableArtists.splice(artistIndex, 1);
         }
 
+        console.log('Playing new song: ' + song.toString());
         this._playOrSkipNextSong(song);
     },
 
@@ -138,24 +144,13 @@ AudioPlaylist.prototype = {
         var url = song.getURL();
         if(url === undefined || url === null) {
             // Remove the song from this playlist and try again
-            this._skipSongAndPlayNext();
+            this.nextSong();
         }else{
             // Play song
             this._playSong(song);
 
-            this._playedSongs.push(song);
-            this._playedSongsIndex = this._playedSongs.length - 1;
+            this._songHistory.add(song);
         }
-    },
-
-    _skipSongAndPlayNext: function() {
-        this.nextSong();
-    },
-
-    _notifyError: function(error) {
-        alert('Woops! There were problems trying to load the song. ' +
-              'Select another country or skip this song.');
-        console.error(error);
     },
 
     _playSong: function(song) {
@@ -167,30 +162,14 @@ AudioPlaylist.prototype = {
         }
     },
 
-    _removeSongAnContinueNext: function() {
-        // Remove the song from this playlist and try again
-        this._songs.splice(this._index--, 1);
-
-        this.nextSong();
-    },
-
-    _removeSongAnContinuePrev: function() {
-        // Remove the song from this playlist and try again
-        this._songs.splice(this._index++, 1);
-
-        this.prevSong();
+    _notifyError: function(error) {
+        alert('Woops! There were problems trying to load the song. ' +
+              'Select another country or skip this song.');
+        console.error(error);
     },
 
     hasSongs: function() {
         return this._playableArtists.length > 0;
-    },
-
-    hasNextSong: function() {
-        return this._playedSongsIndex < this._playedSongs.length - 1;
-    },
-
-    hasPrevSong: function() {
-        return this._playedSongsIndex > 0;
     },
 
     onSongChange: function(callback) {
