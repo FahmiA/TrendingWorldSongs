@@ -92,7 +92,8 @@ AudioPlayer.prototype = {
         this._enableNextButton();
         this._enablePrevButton();
 
-        this._artistSpan.attr('href', song.getArtistURL());
+        //this._artistSpan.attr('href', song.getArtistURL());
+        this._artistSpan.attr('href', '#');
     },
 
     _showLoadingMessage: function() {

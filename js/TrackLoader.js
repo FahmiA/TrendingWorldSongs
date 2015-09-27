@@ -3,20 +3,19 @@ var TrackLoader = function() {
 };
 
 TrackLoader.prototype = {
-    load: function(song) {
-        console.log('Retrieving info for song ' + song.toString());
-        if(song.hasURL()) {
-            console.log('    URL cached: ' + song.getURL());
-            // Retrieve the cached URL
-            return Promise.resolve(song.getURL());
+    load: function(artist) {
+        console.log('Retrieving songs for artist ' + artist.toString());
+        if(artist.hasSongsLoaded()) {
+            console.log('    Songs cached');
+            return Promise.resolve();
         }
 
-        console.log('   Fetching URL for first time with ids: ' + JSON.stringify(song.getIds()));
-        // Fetch the URL
-        var urlRetrievalPromises = song.getIds().map(this._getTracks);
-        return Promise.all(urlRetrievalPromises)
-                .then(this._filterTracks)
-                .then(this._updateSong.bind(this, song));
+        console.log('    Fetching artist songs');
+
+        // Fetch the song tracks
+        return this._getSongs(artist)
+                .then(this._filterSongsWithPreviewURL)
+                .then(this._updateArtist.bind(this, artist));
     },
 
     getAuthenticatedURL: function(url) {
@@ -54,10 +53,11 @@ TrackLoader.prototype = {
         return url;
     },
 
-    _getTracks: function(songId) {
-        var url = new SimpleURL('http://developer.echonest.com/api/v4/song/profile');
-        url.addParameter('api_key', this.ECHONEST_API_KEY)
-           .addParameter('id', songId)
+    _getSongs: function(artist) {
+        var url = new SimpleURL('http://developer.echonest.com/api/v4/song/search');
+        url.addParameter('api_key', ECHONEST_API_KEY)
+           .addParameter('artist_id', artist.getId())
+           .addParameter('sort', 'song_hotttnesss-desc')
            .addParameter('bucket', 'tracks')
            .addParameter('bucket', 'id:7digital-US')
            .addParameter('bucket', 'id:7digital-AU')
@@ -71,30 +71,35 @@ TrackLoader.prototype = {
                 if(errorMessage) {
                     reject(errorMessage);
                 }else{
-                    resolve(data.response.songs[0].tracks);
+                    var songs = data.response.songs
+                                    .map(this._getSong.bind(this, artist));
+                    resolve(songs);
                 }
-            });
-        });
+            }.bind(this));
+        }.bind(this));
     },
 
-    _filterTracks: function(tracks) {
-        tracks = ArrayUtil.flatten(tracks);
+    _getSong: function(artist, songJson) {
+        var song = new Song(songJson.title, songJson.id, artist);
 
-        return Promise.resolve(tracks);
-    },
-    
-    _updateSong: function(song, tracks) {
-        console.log('        tracks found: ' + tracks.length);
-        if(tracks.length > 0) {
+        var tracks = songJson.tracks;
+        if(tracks && tracks.length > 0) {
             var track = tracks[0]; // Just take the first track
             song.setURL(track.preview_url);
             song.setAlbumCoverURL(track.release_image);
-
-            return Promise.resolve(song.getURL());
         }
 
-        // No song URL (don't reject, as this is reserved for actual errors)
-        return Promise.resolve();
+        return song;
+    },
+
+    _filterSongsWithPreviewURL: function(songs) {
+        return songs.filter(function(song) {
+            return song.hasURL();
+        });
+    },
+
+    _updateArtist: function(artist, songs) {
+        artist.setSongs(songs);
     },
 };
 

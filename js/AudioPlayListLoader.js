@@ -11,14 +11,14 @@ AudioPlayListLoader.prototype = {
 
     loadPlaylist: function(audioPlaylist, countryName) {
         return this._queryCountry(countryName)
-                    .then(this._getSongs.bind(this))
+                    .then(this._getArtists.bind(this))
                     .then(this._updatePlaylist.bind(this, audioPlaylist));
     },
 
     _queryCountry: function(countryName) {
         var queryableCountryName = this._getQueryableCountryName(countryName);
 
-        var url = new SimpleURL('http://developer.echonest.com/api/v4/artist/search');
+        var url = new SimpleURL('http://128.199.193.50:6081/api/v4/artist/search');
         url.addParameter('api_key', ECHONEST_API_KEY)
            .addParameter('artist_location', '^' + queryableCountryName)
            .addParameter('sort', 'hotttnesss-desc')
@@ -47,34 +47,40 @@ AudioPlayListLoader.prototype = {
         return countryName;
     },
 
-    _getSongs: function(artistsJson) {
-        var songsList = [];
-        var songsMap = {};
+    _getArtists: function(artistsJson) {
+        var artists = artistsJson.map(function(artistJson) {
+            return new Artist(artistJson.name, artistJson.id);
+        });
 
-        artistsJson.forEach(function(artist) {
-            var artistName = artist.name;
-            var artistId = artist.id;
-            var artistURL = this._getURL(artist.urls);
-            artist.songs = artist.songs || []; // artist.songs may, on occasion, not exist
-
-            artist.songs.forEach(function(song) {
-                var artistSongId = artistId + song.title;
-
-                var songObj = songsMap[artistSongId];
-                if(!songObj) {
-                    songObj = new Song(song.title, artistName, artistURL);
-
-                    songsList.push(songObj);
-                    songsMap[artistSongId] = songObj;
-
-                }
-
-                songObj.addId(song.id);
-            });
-        }.bind(this));
-
-        return Promise.resolve(songsList);
+        return artists;
     },
+
+    //_getSongs: function(artistsJson) {
+    //    var songsList = [];
+    //    var songsMap = {};
+
+    //    artistsJson.forEach(function(artist) {
+    //        var artistName = artist.name;
+    //        var artistId = artist.id;
+    //        var artistURL = this._getURL(artist.urls);
+    //        artist.songs = artist.songs || []; // artist.songs may, on occasion, not exist
+
+    //        artist.songs.forEach(function(song) {
+    //            var artistSongId = artistId + song.title;
+
+    //            var songObj = songsMap[artistSongId];
+    //            if(!songObj) {
+    //                songObj = new Song(song.title, song.id, artistName, artistURL);
+
+    //                songsList.push(songObj);
+    //                songsMap[artistSongId] = songObj;
+
+    //            }
+    //        });
+    //    }.bind(this));
+
+    //    return Promise.resolve(songsList);
+    //},
 
     _getURL: function(urlJson) {
         var url = null;
@@ -86,12 +92,12 @@ AudioPlayListLoader.prototype = {
         return url;
     },
 
-    _updatePlaylist: function(audioPlaylist, songs) {
-        songs.forEach(function(song) {
-            audioPlaylist.addSong(song);
+    _updatePlaylist: function(audioPlaylist, artists) {
+        artists.forEach(function(artist) {
+            audioPlaylist.addArtist(artist);
         });
 
-        audioPlaylist.shuffle();
+        //audioPlaylist.shuffle();
     },
 
 };
