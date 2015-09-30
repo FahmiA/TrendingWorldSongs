@@ -2,6 +2,9 @@
 var AudioPlaylist = function(audioElement) {
     this._audio = audioElement;
 
+    // The currently playing song
+    this._currentSong = null;
+
     // All artists (Artist ID to Artist object)
     this._availableArtistMap = {};
 
@@ -36,7 +39,7 @@ AudioPlaylist.prototype = {
 
     clear: function() {
         this.pause();
-        this._audio.src = null;
+        this._currentSong = null;
 
         this._availableArtistMap = {};
         this._playableArtists = [];
@@ -52,7 +55,7 @@ AudioPlaylist.prototype = {
     },
 
     play: function() {
-        if(this._audio.src.length > 0) {
+        if(this._hasCurrentSong()) {
             // Resume a paused song
             this._audio.play();
         } else {
@@ -155,6 +158,7 @@ AudioPlaylist.prototype = {
     },
 
     _playSong: function(song) {
+        this._setCurrentSong(song);
         this._audio.src = this._trackLoader.getAuthenticatedURL(song.getURL());
         this.play();
 
@@ -167,6 +171,14 @@ AudioPlaylist.prototype = {
         alert('Woops! There were problems trying to load the song. ' +
               'Select another country or skip this song.');
         console.error(error);
+    },
+
+    _setCurrentSong: function(song) {
+        this._currentSong = song;
+    },
+
+    _hasCurrentSong: function() {
+        return !!this._currentSong;
     },
 
     hasSongs: function() {
