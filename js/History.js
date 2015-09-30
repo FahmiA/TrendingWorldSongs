@@ -30,6 +30,14 @@ History.prototype = {
         return this._index > -1 && this._index < this._values.length - 1;
     },
 
+    removeLast: function() {
+        this._values.pop();
+
+        if(this._index >= this._values.length) {
+            this._index = this._values.length - 1;
+        }
+    },
+
     reset: function() {
         this._values = [];
         this._index = -1;

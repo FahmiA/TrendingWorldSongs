@@ -27,7 +27,7 @@ var AudioPlaylist = function(audioElement) {
     this._audio.addEventListener('ended', this.nextSong.bind(this));
 
     // Song could not be retrieved, play next song
-    this._audio.addEventListener('error', this.nextSong.bind(this));
+    this._audio.addEventListener('error', this._recoverError.bind(this));
 };
 
 AudioPlaylist.prototype = {
@@ -165,6 +165,11 @@ AudioPlaylist.prototype = {
         if(this._songChangedCallback) {
             this._songChangedCallback(song);
         }
+    },
+
+    _recoverError: function(error) {
+        this._songHistory.removeLast();
+        this.nextSong();
     },
 
     _notifyError: function(error) {
