@@ -24,3 +24,7 @@
 #Lakes {
     display: none;
 }
+
+#Text {
+    pointer-events: none;
+}
