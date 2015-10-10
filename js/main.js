@@ -15,14 +15,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 function handleCountryClick() {
-    var countryName = this.id;
+    var countryID = this.id;
 
     if(prevCountryElement) {
         handleCountryDeselect(prevCountryElement);
     }
 
     displayNote(this);
-    handleCountrySelect(this, countryName);
+    handleCountrySelect(this, countryID);
     prevCountryElement = this;
 }
 
@@ -48,9 +48,9 @@ function handleCountryDeselect(countryElement) {
         .classed('country-selected', false);
 }
 
-function handleCountrySelect(countryElement, countryName) {
-    var niceCountryName = countryName.toLowerCase();
-    niceCountryName = niceCountryName.replace(/_/g, ' ');
+function handleCountrySelect(countryElement, countryID) {
+    var countryName = getCountryName(countryID);
+    var niceCountryName = getNiceCountryName(countryID);
 
     // Display the country as selected
     d3.select(countryElement)
@@ -61,7 +61,7 @@ function handleCountrySelect(countryElement, countryName) {
     var scribbles = d3.select(svgDoc).select('#scribbles').selectAll('g');
     scribbles.classed('scribble-selected', false);
 
-    var scribbleId = '#S-' + countryName;
+    var scribbleId = '#Scribble-' + countryName;
     var selectedScribble = d3.select(svgDoc).select('#scribbles').select(scribbleId);
     selectedScribble.classed('scribble-selected', true);
 
@@ -89,8 +89,25 @@ function connectWorldMap() {
         .on('click', debounce(handleCountryClick))
         .append('title')
         .text(function() {
-            return this.parentNode.id.replace(/_/g, ' ');
+            return getNiceCountryName(this.parentNode.id);
         });
+}
+
+function getCountryName(countryID) {
+    return countryID.replace(/^Country-/, '');
+}
+
+function getNiceCountryName(countryID) {
+    var name = getCountryName(countryID)
+                    .replace(/_/g, ' ')
+                    .toLowerCase();
+
+    name = capitalize(name);
+    return name;
+}
+
+function capitalize(s) {
+    return s.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 }
 
 function createAudioPlayer() {

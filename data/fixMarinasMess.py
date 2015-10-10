@@ -19,24 +19,33 @@ def appendStyleElement(svgRoot):
     svgRoot.insert(0, defsElement)
     defsElement.append(linkElement)
 
-def resolveDulicateScribbleIds(svgRoot):
+def resolveScribbleIDs(svgRoot):
     print 'Resolving scribble country IDs'
+    resolveIds(svgRoot, 'scribbles', 'Scribble')
 
-    scribblesElement = None
+def resolveCountryIDs(svgRoot):
+    print 'Resolving country IDs'
+    resolveIds(svgRoot, 'Countries', 'Country')
+
+def resolveIds(svgRoot, groupID, idPrefix):
+    groupElement = None
     for childElement in svgRoot:
-        if(childElement.tag == '{http://www.w3.org/2000/svg}g' and childElement.get('id') == 'scribbles'):
-            scribblesElement = childElement
+        if(childElement.tag == '{http://www.w3.org/2000/svg}g' and childElement.get('id') == groupID):
+            groupElement = childElement
             break
 
-    if scribblesElement == None:
-        print 'WARN: Could not find "scribbles" group'
+    if groupElement == None:
+        print 'WARN: Could not find "%s" group' % (groupID)
         return
 
-    for countryElement in scribblesElement:
-        elementID = countryElement.get('id')
+    for childElement in groupElement:
+        elementID = childElement.get('id')
+        if elementID == None:
+            continue
+
         elementID = re.sub(r'_\d+_$', '', elementID) # Remove _1_, _2_, and the likes
-        elementID = 'Scibble-'+elementID
-        countryElement.set('id', elementID)
+        elementID = idPrefix + '-' + elementID
+        childElement.set('id', elementID)
 
 def updateViewbox(svgRoot):
     print 'Correcting SVG ViewBox'
@@ -49,10 +58,10 @@ if __name__ == '__main__':
 
     doc = ET.parse(inputPath)
     svgRoot = doc.getroot();
-    print svgRoot.tag
 
     appendStyleElement(svgRoot)
-    resolveDulicateScribbleIds(svgRoot)
+    resolveScribbleIDs(svgRoot)
+    resolveCountryIDs(svgRoot)
     updateViewbox(svgRoot)
 
     print 'Writing file to', outputPath
