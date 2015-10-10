@@ -11,60 +11,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     createAudioPlayer();
     
     var drawingArea = document.getElementById("drawingArea");
-    drawingArea.addEventListener('load', connectWorldMap);
+    drawingArea.addEventListener('load', bindWorldMap);
 });
 
-function handleCountryClick() {
-    var countryID = this.id;
+function bindWorldMap() {
+    console.log('World map loaded');
 
-    if(prevCountryElement) {
-        handleCountryDeselect(prevCountryElement);
-    }
-
-    displayNote(this);
-    handleCountrySelect(this, countryID);
-    prevCountryElement = this;
-}
-
-function displayNote(element) {
-    var note = document.getElementById('note');
-    if(!note) {
-        return;
-    }
-
-    var box = element.getBoundingClientRect();
-    var noteHeight = 50;
-    var noteWidth = 50;
-    d3.select(note)
-        .classed('hidden', false)
-        .style('left', (box.left + (box.width / 2) -  (noteWidth / 2)) + 'px')
-        .style('top', (box.top + (box.height / 2) -  (noteHeight / 2)) + 'px')
-        .style('width', noteWidth + 'px')
-        .style('height', noteHeight + 'px');
-}
-
-function handleCountryDeselect(countryElement) {
-    d3.select(countryElement)
-        .classed('country-selected', false);
-}
-
-function handleCountrySelect(countryElement, countryID) {
-    var countryName = getCountryName(countryID);
-    var niceCountryName = getNiceCountryName(countryID);
-
-    // Display the country as selected
-    d3.select(countryElement)
-        .classed('country-selected', true);
-
-    // Hide all scribbles
     var svgDoc = drawingArea.contentDocument;
-    var scribbles = d3.select(svgDoc).select('#scribbles').selectAll('g');
-    scribbles.classed('scribble-selected', false);
 
-    var scribbleId = '#Scribble-' + countryName;
-    var selectedScribble = d3.select(svgDoc).select('#scribbles').select(scribbleId);
-    selectedScribble.classed('scribble-selected', true);
+    var worldMap = new WorldMap(svgDoc);
+    worldMap.init();
 
+    worldMap.bind('select', playAudioFromCountry);
+}
+
+function playAudioFromCountry(niceCountryName) {
     audioPlaylist.clear();
 
     d3.select('#countryName').text(niceCountryName);
@@ -79,35 +40,6 @@ function handleCountrySelect(countryElement, countryID) {
                   'try again at a later time.');
             console.error(error);
         });
-}
-
-function connectWorldMap() {
-    console.log('World map loaded');
-
-    var svgDoc = drawingArea.contentDocument;
-    d3.select(svgDoc).select('#Countries').selectAll('g')
-        .on('click', debounce(handleCountryClick))
-        .append('title')
-        .text(function() {
-            return getNiceCountryName(this.parentNode.id);
-        });
-}
-
-function getCountryName(countryID) {
-    return countryID.replace(/^Country-/, '');
-}
-
-function getNiceCountryName(countryID) {
-    var name = getCountryName(countryID)
-                    .replace(/_/g, ' ')
-                    .toLowerCase();
-
-    name = capitalize(name);
-    return name;
-}
-
-function capitalize(s) {
-    return s.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 }
 
 function createAudioPlayer() {
@@ -129,17 +61,3 @@ function createAudioPlayer() {
     audioPlayer.init();
 }
 
-function debounce(fn, delay) {
-// http://codereview.stackexchange.com/questions/58406/function-buffer-to-avoid-triggering-an-event-handler-too-frequently
-    var timeout;
-
-    return function () {
-        var context = this,
-            args = arguments;
-
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-            fn.apply(context, args);
-        }, delay || 250);
-    };
-}

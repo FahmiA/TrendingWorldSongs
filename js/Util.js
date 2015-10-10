@@ -5,6 +5,12 @@ var ArrayUtil = {
     }
 };
 
+var StringUtil = {
+    capitalize: function(value) {
+        return value.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+    }
+};
+
 var EchoNestUtil = {
     validateResponse: function(data, countryName) {
         var errorMessage = null;
@@ -17,5 +23,22 @@ var EchoNestUtil = {
         }
 
         return errorMessage;
+    }
+};
+
+var DOMUtil = {
+    debounce: function(fn, delay) {
+        // http://codereview.stackexchange.com/questions/58406/function-buffer-to-avoid-triggering-an-event-handler-too-frequently
+        var timeout;
+
+        return function () {
+            var context = this,
+                args = arguments;
+
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                fn.apply(context, args);
+            }, delay || 250);
+        };
     }
 };
